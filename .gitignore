@@ -7,3 +7,6 @@ Build
 *.sln.DotSettings.user
 bin
 obj
+.idea
+!LuaBinding/LuaBinding.sln
+!LuaBinding/LuaBinding.csproj
