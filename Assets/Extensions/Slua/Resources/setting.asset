@@ -13,6 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eol: 0
   exportExtensionMethod: 1
-  UnityEngineGeneratePath: Assets/Extensions/Slua/LuaObject/
+  UnityEngineGeneratePath: LuaBinding/
   debugPort: 10240
   debugIP: 0.0.0.0

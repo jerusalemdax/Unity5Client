@@ -44,7 +44,7 @@ namespace SLua{
 
 		public EOL eol = EOL.Native;
 		public bool exportExtensionMethod = true;
-		public string UnityEngineGeneratePath = "Assets/Extensions/Slua/LuaObject/";
+		public string UnityEngineGeneratePath = "LuaBinding/";
 
 		public int debugPort=10240;
 		public string debugIP="0.0.0.0";
