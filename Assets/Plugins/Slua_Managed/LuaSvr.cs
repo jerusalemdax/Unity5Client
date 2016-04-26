@@ -128,7 +128,7 @@ namespace SLua
 				list.AddRange(sublist);
 			}
 #else
-		    var assemblyName = "Assembly-CSharp";
+		    var assemblyName = "LuaBinding";
             Assembly assembly = Assembly.Load(assemblyName);
 			list.AddRange(getBindList(assembly,"SLua.BindUnity"));
 			list.AddRange(getBindList(assembly,"SLua.BindUnityUI"));
