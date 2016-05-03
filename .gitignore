@@ -8,5 +8,5 @@ Build
 bin
 obj
 .idea
-!LuaBinding/LuaBinding.sln
-!LuaBinding/LuaBinding.csproj
+!Scripts/Scripts.sln
+!Scripts/Scripts.csproj
