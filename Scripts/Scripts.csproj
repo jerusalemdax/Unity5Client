@@ -3,6 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<CommonDllPath>../Library/UnityAssemblies</CommonDllPath>
+	<UIDllPath>../Library/UnityAssemblies</UIDllPath>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{87044393-6696-4D07-3815-2463D890CDAE}</ProjectGuid>
@@ -45,17 +47,26 @@
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\Temp\bin\$(Configuration)\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
+	<Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+      <HintPath>$(CommonDllPath)/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(UIDllPath)/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\Library\ScriptAssemblies\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>$(CommonDllPath)/UnityEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include=".\*\*.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(OutputPath)Scripts.dll" DestinationFolder="..\Assets\StreamingAssets" ContinueOnError="false" />
+    <Copy SourceFiles="$(OutputPath)Scripts.dll" DestinationFolder="..\StreamingAssets" ContinueOnError="false" />
   </Target>
 </Project>

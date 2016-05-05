@@ -1,14 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+    private static Main Instance;
     private CLRSharp.CLRSharp_Environment _env;
     private CLRSharp.ThreadContext _context;
     private CLRSharp.IMethod _startMethod;
     private CLRSharp.IMethod _updateMethod;
     private CLRSharp.IMethod _onDestroyMethod;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -34,7 +43,7 @@ public class Main : MonoBehaviour
 #if UNITY_ANDROID
         dllPath = Application.streamingAssetsPath + "/Scripts.dll";
 #else
-        dllPath = "file:///" + Application.streamingAssetsPath + "/Scripts.dll";
+        dllPath = "file:///" + Application.dataPath + "/../StreamingAssets/Scripts.dll";
 #endif
         WWW www = new WWW(dllPath);
         yield return www;
@@ -55,6 +64,11 @@ public class Main : MonoBehaviour
             _onDestroyMethod.Invoke(_context, null, null);
         }
         Debug.Log("Main OnDestroy");
+    }
+
+    public static void StartCoroutineFunc(IEnumerator func)
+    {
+        Instance.StartCoroutine(func);
     }
 
     public class Logger : CLRSharp.ICLRSharp_Logger//实现L#的LOG接口
