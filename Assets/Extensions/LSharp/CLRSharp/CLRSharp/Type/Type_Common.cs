@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable 0436
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -52,7 +54,7 @@ namespace CLRSharp
         }
 
         bool IsEnum();
-            
+
     }
     public interface ICLRType_Sharp : ICLRType
     {

@@ -1,4 +1,6 @@
-﻿using Mono.Cecil.Cil;
+﻿#pragma warning disable 0436
+
+using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 

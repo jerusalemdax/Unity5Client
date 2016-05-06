@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable 0436
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 

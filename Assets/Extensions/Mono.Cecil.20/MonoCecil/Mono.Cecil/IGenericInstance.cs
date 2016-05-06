@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#pragma warning disable 0436
+
 using System.Text;
 
 using Mono.Collections.Generic;
