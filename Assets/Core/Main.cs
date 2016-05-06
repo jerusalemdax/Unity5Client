@@ -22,6 +22,7 @@ public class Main : MonoBehaviour
     void Start()
     {
         Debug.Log("Unity version: " + Application.unityVersion);
+        Debug.Log("Platform: " + Application.platform);
 
         _env = new CLRSharp.CLRSharp_Environment(new Logger());
 
