@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable 0436
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -102,7 +104,7 @@ namespace CLRSharp
 
                             if (bWarning & env.GetCrossBind(ts) == null)
                             {
-                               
+
                                 if (ts.IsInterface)
                                 {
                                     foreach(var t in ts.GetInterfaces())
@@ -225,7 +227,7 @@ namespace CLRSharp
         {
             Mono.Cecil.MethodDefinition minDistanceMethod = null;
             List<int> minDistanceParameters = null;
-            
+
             if (type_CLRSharp.HasMethods)
             {
                 foreach (var m in type_CLRSharp.Methods)
@@ -235,7 +237,7 @@ namespace CLRSharp
                     {
                         bool match = true;
                         List<int> currentDistanceParameters = new List<int>();
-                        
+
                         for (int i = 0; i < ((types == null) ? 0 : types.Count); i++)
                         {
                             var envtype = env.GetType(m.Parameters[i].ParameterType.FullName);
@@ -249,62 +251,62 @@ namespace CLRSharp
                             }
                             else
                             {
-                                if (!(envtype.TypeForSystem.IsAssignableFrom(types[i].TypeForSystem))) 
+                                if (!(envtype.TypeForSystem.IsAssignableFrom(types[i].TypeForSystem)))
                                 {
                                     match = false;
                                     break;
                                 }
-                                
+
                                 currentDistanceParameters.Add(GetInheritanceDistance(envtype.TypeForSystem, types[i].TypeForSystem));
-                                
+
                             }
                         }
                         if (match)
                         {
-                            if (minDistanceParameters == null) 
+                            if (minDistanceParameters == null)
                             {
                                 minDistanceMethod = m;
                                 minDistanceParameters = currentDistanceParameters;
                             }
-                            else 
+                            else
                             {
-                                for (int i = 0; i < currentDistanceParameters.Count; i++) 
+                                for (int i = 0; i < currentDistanceParameters.Count; i++)
                                 {
-                                    if (currentDistanceParameters[i] < minDistanceParameters[i]) 
+                                    if (currentDistanceParameters[i] < minDistanceParameters[i])
                                     {
                                         minDistanceMethod = m;
                                         minDistanceParameters = currentDistanceParameters;
                                     }
                                 }
                             }
-                            
+
                         }
                     }
                 }
-                
-                if (minDistanceMethod == null) 
+
+                if (minDistanceMethod == null)
                 {
                     return null;
                 }
                 return new Method_Common_CLRSharp(this, minDistanceMethod);
             }
-            
+
             return null;
         }
-        
+
         public int GetInheritanceDistance(Type baseClass, Type subClass)
         {
-            if (baseClass == subClass) 
+            if (baseClass == subClass)
             {
                 return 0;
             }
-            if (!baseClass.IsAssignableFrom (subClass)) 
+            if (!baseClass.IsAssignableFrom (subClass))
             {
                 return int.MaxValue;
             }
-            
+
             int distance = 0;
-            while ((subClass = subClass.BaseType) != baseClass) 
+            while ((subClass = subClass.BaseType) != baseClass)
             {
                 distance++;
             }

@@ -25,8 +25,17 @@ public class Main : MonoBehaviour
 
         _env = new CLRSharp.CLRSharp_Environment(new Logger());
 
-        StartCoroutine(LoadScripts());
-
+        ResourceManager.Instance.LoadResourceBytes("Scripts.dll", bytes =>
+        {
+            MemoryStream msDll = new MemoryStream(bytes);
+            _env.LoadModule(msDll);
+            _context = new CLRSharp.ThreadContext(_env);
+            CLRSharp.ICLRType wantType = _env.GetType("LMain");
+            _startMethod = wantType.GetMethod("Start", CLRSharp.MethodParamList.constEmpty());
+            _updateMethod = wantType.GetMethod("Update", CLRSharp.MethodParamList.constEmpty());
+            _onDestroyMethod = wantType.GetMethod("OnDestroy", CLRSharp.MethodParamList.constEmpty());
+            _startMethod.Invoke(_context, null, null);
+        });
     }
 
     void Update()
@@ -35,26 +44,6 @@ public class Main : MonoBehaviour
         {
             _updateMethod.Invoke(_context, null, null);
         }
-    }
-
-    IEnumerator LoadScripts()
-    {
-        string dllPath;
-#if UNITY_ANDROID
-        dllPath = Application.streamingAssetsPath + "/Scripts.dll";
-#else
-        dllPath = "file:///" + Application.dataPath + "/../StreamingAssets/Scripts.dll";
-#endif
-        WWW www = new WWW(dllPath);
-        yield return www;
-        MemoryStream msDll = new MemoryStream(www.bytes);
-        _env.LoadModule(msDll);
-        _context = new CLRSharp.ThreadContext(_env);
-        CLRSharp.ICLRType wantType = _env.GetType("LMain");
-        _startMethod = wantType.GetMethod("Start", CLRSharp.MethodParamList.constEmpty());
-        _updateMethod = wantType.GetMethod("Update", CLRSharp.MethodParamList.constEmpty());
-        _onDestroyMethod = wantType.GetMethod("OnDestroy", CLRSharp.MethodParamList.constEmpty());
-        _startMethod.Invoke(_context, null, null);
     }
 
     void OnDestroy()

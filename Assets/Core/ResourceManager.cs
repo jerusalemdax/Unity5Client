@@ -23,10 +23,10 @@ public class ResourceManager
         }
     }
 
-    public void LoadResourceObj(string path, Action<Object> callback)
+    public void LoadResourceObj(string path, Action<Object[]> callback)
     {
-#if UNITY_EDITOR
-        callback(AssetDatabase.LoadAssetAtPath("Assets/Prefabs/" + path, typeof(GameObject)));
+#if !UNITY_EDITOR
+        callback(AssetDatabase.LoadAssetAtPath("Assets/" + path, typeof(GameObject)));
 #else
         Main.StartCoroutineFunc(LoadResourceObjCor(path, callback));
 #endif
@@ -37,17 +37,16 @@ public class ResourceManager
         Main.StartCoroutineFunc(LoadResourceBytesCor(path, callback));
     }
 
-    private IEnumerator LoadResourceObjCor(string path, Action<Object> callback)
+    private IEnumerator LoadResourceObjCor(string path, Action<Object[]> callback)
     {
-        string fullPath = "file:///" + Application.dataPath + "/../StreamingAssets/" + path + ".unity3d";
-        Debug.Log("Load Resource Path: " + fullPath);
+        string fullPath = PathManager.GetReadOnlyPathWithPrefix(path);
         WWW www = new WWW(fullPath);
         yield return www;
         if (www.isDone)
         {
             if (string.IsNullOrEmpty(www.error))
             {
-                callback(www.assetBundle.mainAsset);
+                callback(www.assetBundle.LoadAllAssets());
             }
             else
             {
@@ -62,8 +61,7 @@ public class ResourceManager
 
     private IEnumerator LoadResourceBytesCor(string path, Action<byte[]> callback)
     {
-        string fullPath = "file:///" + Application.dataPath + "/../StreamingAssets/" + path;
-        Debug.Log("Load Resource Path: " + fullPath);
+        string fullPath = PathManager.GetReadOnlyPathWithPrefix(path);
         WWW www = new WWW(fullPath);
         yield return www;
         if (www.isDone)

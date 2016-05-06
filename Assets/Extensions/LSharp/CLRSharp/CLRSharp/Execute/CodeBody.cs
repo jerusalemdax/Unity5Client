@@ -1,4 +1,6 @@
-﻿using Mono.Cecil.Cil;
+﻿#pragma warning disable 0436
+
+using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -367,7 +369,7 @@ namespace CLRSharp
                     case CodeEx.Ldvirtftn:
 
                             this.tokenMethod = context.GetMethod(_p);
- 
+
                         break;
                     case CodeEx.Ldc_I4:
                         this.tokenI32 = (int)_p;
