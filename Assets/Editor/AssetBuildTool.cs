@@ -1,17 +1,18 @@
 ﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
+using AssetBundles;
 
 public class AssetBuildTool{
 
-    [MenuItem("Build/Resources")]
-	public static void BuildBundle ()
+    public static void BuildAssetBundles()
     {
-        string path = PathManager.GetReadOnlyPath("");
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
-        BuildPipeline.BuildAssetBundles(path, BuildAssetBundleOptions.DeterministicAssetBundle, BuildTarget.StandaloneWindows);
+        // Choose the output path according to the build target.
+        string outputPath = Path.Combine(Utility.AssetBundlesOutputPath, Utility.GetPlatformName());
+        if (!Directory.Exists(outputPath))
+            Directory.CreateDirectory(outputPath);
+
+        //@TODO: use append hash... (Make sure pipeline works correctly with it.)
+        BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
     }
 }

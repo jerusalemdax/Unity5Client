@@ -56,9 +56,9 @@ public class Main : MonoBehaviour
         Debug.Log("Main OnDestroy");
     }
 
-    public static void StartCoroutineFunc(IEnumerator func)
+    public static Coroutine StartCoroutineFunc(IEnumerator func)
     {
-        Instance.StartCoroutine(func);
+        return Instance.StartCoroutine(func);
     }
 
     public class Logger : CLRSharp.ICLRSharp_Logger//实现L#的LOG接口

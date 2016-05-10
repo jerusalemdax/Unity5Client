@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<CommonDllPath>../Library/UnityAssemblies</CommonDllPath>
-	<UIDllPath>../Library/UnityAssemblies</UIDllPath>
+    <CommonDllPath>../Library/UnityAssemblies</CommonDllPath>
+    <UIDllPath>../Library/UnityAssemblies</UIDllPath>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{87044393-6696-4D07-3815-2463D890CDAE}</ProjectGuid>
@@ -47,20 +47,23 @@
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
-	<Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
-	<Reference Include="UnityEngine">
+    <Reference Include="UnityEngine">
       <HintPath>$(CommonDllPath)/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(UIDllPath)/UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\Library\ScriptAssemblies\Assembly-CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>$(CommonDllPath)/UnityEditor.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Source.CSharp.csproj">
+      <Project>{6AC29F59-D154-4BB0-86C5-1CFA1A3F2473}</Project>
+      <Name>Assembly-CSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include=".\*\*.cs" />
