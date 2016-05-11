@@ -8,8 +8,6 @@ Build
 bin
 obj
 .idea
-!Scripts/Scripts.sln
-!Scripts/Scripts.csproj
 Assets/StreamingAssets
 Assets/StreamingAssets.meta
 .DS_Store
