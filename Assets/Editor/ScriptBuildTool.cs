@@ -13,7 +13,7 @@ public class ScriptBuildTool
     {
         List<CSProjectFile> csProjectList = new List<CSProjectFile>();
         List<string> scriptSrcList = new List<string>();
-        scriptSrcList.Add(@".\**\*.cs");
+        scriptSrcList.Add(@".\src\**\*.cs");
         CSProjectFile scriptProj = new CSProjectFile("Scripts", "87044393-6696-4D07-3815-2463D890CDAE", "Scripts/Scripts.csproj", scriptSrcList.ToArray());
         GenerateCSProject(scriptProj);
 
@@ -25,6 +25,22 @@ public class ScriptBuildTool
 //        GenerateCSProject(engineProj);
         csProjectList.Add(scriptProj);
         GenerateScriptSlnFile(csProjectList.ToArray());
+    }
+
+    [MenuItem("Build/Build Script")]
+    public static void BuildScript()
+    {
+        if (!File.Exists("Scripts/Scripts.sln"))
+        {
+            GenerateProjectFiles();
+        }
+        string xbuild = "xbuild";
+        if (Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            xbuild += ".bat";
+        }
+        string xbuildPath = PathCombine(GetFrameWorksFolder(), "MonoBleedingEdge", "bin", xbuild);
+        CommandLineTool.Command(xbuildPath, "Scripts/Scripts.sln /p:Configuration=Release");
     }
 
     public static void GenerateCSProject(CSProjectFile csproj)
@@ -182,7 +198,7 @@ public class ScriptBuildTool
         itemGroup.AppendChild(GenerateReference(doc, "UnityEngine", Path.Combine(GetManagedFolder(), "UnityEngine.dll")));
         itemGroup.AppendChild(GenerateReference(doc, "UnityEditor", Path.Combine(GetManagedFolder(), "UnityEditor.dll")));
         itemGroup.AppendChild(GenerateReference(doc, "UnityEngine.UI", Path.Combine(GetFrameWorksFolder(), @"UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll")));
-        itemGroup.AppendChild(GenerateReference(doc, "Assembly-CSharp", @"..\Library\Assembly-CSharp\Assembly-CSharp.dll"));
+        itemGroup.AppendChild(GenerateReference(doc, "Assembly-CSharp", @"..\Library\ScriptAssemblies\Assembly-CSharp.dll"));
         return itemGroup;
     }
 
@@ -213,5 +229,13 @@ public class ScriptBuildTool
     public static string GetManagedFolder()
     {
         return Path.Combine(GetFrameWorksFolder(), "Managed");
+    }
+
+    static string PathCombine(params string[] parts)
+    {
+        var path = parts[0];
+        for (var i = 1; i < parts.Length; ++i)
+            path = Path.Combine(path, parts[i]);
+        return path;
     }
 }
