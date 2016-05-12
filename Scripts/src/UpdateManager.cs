@@ -20,6 +20,10 @@ class UpdateManager
     {
         Debug.Log("UpdateManager Start");
         UIManager.Instance.ShowPanel("UpdatePanel");
+        HttpManager.Instance.StartHttpGet("http://www.baidu.com", content =>
+        {
+            Debug.Log(content);
+        });
     }
 
     public void OnDestroy()
