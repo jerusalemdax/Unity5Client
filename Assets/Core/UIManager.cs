@@ -3,7 +3,7 @@ using AssetBundles;
 using UnityEngine;
 using UnityEngine.UI;
 
-class UIManager
+public class UIManager
 {
     private static UIManager _instance;
     private UIManager() { }
