@@ -3,26 +3,13 @@ using AssetBundles;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager
+public class UIManager : MonoBehaviour
 {
-    private static UIManager _instance;
-    private UIManager() { }
-    public static UIManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new UIManager();
-            }
-            return _instance;
-        }
-    }
-
-    public void Start()
+    public static void Init()
     {
         Debug.Log("UIManager Start");
-        GameObject go = new GameObject("UI");
+        GameObject go = new GameObject("UIManager");
+        DontDestroyOnLoad(go);
         Canvas canvas = go.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         CanvasScaler scaler = go.AddComponent<CanvasScaler>();
@@ -32,7 +19,7 @@ public class UIManager
         scaler.matchWidthOrHeight = 1.0f;
     }
 
-    public void ShowPanel(string panelName)
+    public static void ShowPanel(string panelName)
     {
         Debug.Log("ShowPanel: " + panelName);
 
@@ -54,13 +41,8 @@ public class UIManager
         {
             var obj = Object.Instantiate(prefab) as GameObject;
             obj.name = prefab.name;
-            obj.transform.SetParent(GameObject.Find("UI").transform, false);
+            obj.transform.SetParent(GameObject.Find("UIManager").transform, false);
         }
 
-    }
-
-    public void OnDestroy()
-    {
-        Debug.Log("UIManager OnDestroy");
     }
 }

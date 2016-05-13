@@ -31,13 +31,12 @@ public class LMain
         {
             yield return Main.StartCoroutineFunc(request);
         }
-        UIManager.Instance.Start();
+        UIManager.Init();
         UpdateManager.Instance.Start();
     }
 
     public void OnDestroy()
 	{
-        UIManager.Instance.OnDestroy();
         UpdateManager.Instance.OnDestroy();
         Debug.Log("LMain OnDestroy");
     }
