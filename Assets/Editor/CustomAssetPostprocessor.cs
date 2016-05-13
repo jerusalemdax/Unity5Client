@@ -7,13 +7,13 @@ public class CustomAssetPostprocessor : AssetPostprocessor
     {
         foreach (var str in importedAssets)
         {
-            if (str.EndsWith(".cs") || str.StartsWith("ProjectSettings/") || str.Equals("Assets") || str.Equals("Assets/Scenes/Start.unity"))
+            if (str.EndsWith(".prefab") || str.EndsWith(".jpg") || str.StartsWith(".png"))
             {
-                return;
+                Debug.Log("Imported Asset: " + str);
+                AssetImporter assetImporter = AssetImporter.GetAtPath(str);
+                assetImporter.assetBundleName = str.Replace("Assets/", "");
             }
-            Debug.Log("Imported Asset: " + str);
-            AssetImporter assetImporter = AssetImporter.GetAtPath(str);
-            assetImporter.assetBundleName = str.Replace("Assets/", "");
+
         }
     }
 }
