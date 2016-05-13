@@ -7,7 +7,7 @@ public class CustomAssetPostprocessor : AssetPostprocessor
     {
         foreach (var str in importedAssets)
         {
-            if (str.EndsWith(".cs") || str.StartsWith("ProjectSettings/") || str.Equals("Assets"))
+            if (str.EndsWith(".cs") || str.StartsWith("ProjectSettings/") || str.Equals("Assets") || str.Equals("Assets/Scenes/Start.unity"))
             {
                 return;
             }
