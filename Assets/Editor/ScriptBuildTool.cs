@@ -199,6 +199,7 @@ public class ScriptBuildTool
         itemGroup.AppendChild(GenerateReference(doc, "UnityEditor", Path.Combine(GetManagedFolder(), "UnityEditor.dll")));
         itemGroup.AppendChild(GenerateReference(doc, "UnityEngine.UI", Path.Combine(GetFrameWorksFolder(), @"UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll")));
         itemGroup.AppendChild(GenerateReference(doc, "Assembly-CSharp", @"..\Library\ScriptAssemblies\Assembly-CSharp.dll"));
+        itemGroup.AppendChild(GenerateReference(doc, "LitJson", @"..\Assets\Plugins\LitJson.dll"));
         return itemGroup;
     }
 

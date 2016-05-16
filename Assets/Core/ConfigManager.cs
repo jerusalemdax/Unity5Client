@@ -1,4 +1,4 @@
-﻿public class Config
+﻿public class ConfigManager
 {
     public static EngineConfig EngineConfig;
 }

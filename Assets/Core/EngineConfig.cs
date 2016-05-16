@@ -3,5 +3,5 @@
 [Serializable]
 public class EngineConfig
 {
-    public bool UseAssetbundle;
+    public bool ShowStat;
 }
