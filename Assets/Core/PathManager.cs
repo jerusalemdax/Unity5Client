@@ -12,6 +12,11 @@ public class PathManager
     private static string _readOnlyPath = Application.streamingAssetsPath + "/";
     private static string _readWritePathWithPrefix = "file:///" + Application.dataPath + "/PersistentData/";
     private static string _readOnlyPathWithPrefix = "file:///" + Application.streamingAssetsPath + "/";
+#elif UNITY_ANDROID
+    private static string _readWritePath = Application.persistentDataPath + "/";
+    private static string _readOnlyPath = Application.streamingAssetsPath + "/";
+    private static string _readWritePathWithPrefix = Application.persistentDataPath + "/";
+    private static string _readOnlyPathWithPrefix = Application.streamingAssetsPath + "/";
 #else
     private static string _readWritePath = Application.persistentDataPath + "/";
     private static string _readOnlyPath = Application.streamingAssetsPath + "/";

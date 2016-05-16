@@ -21,7 +21,6 @@ public class Main : MonoBehaviour
         ResourceManager.Instance.LoadResourceBytes("Config/Engine.json", bytes =>
         {
             ConfigManager.EngineConfig = JsonUtility.FromJson<EngineConfig>(Encoding.UTF8.GetString(bytes));
-            Debug.Log("ping test: " + ConfigManager.EngineConfig.ShowStat);
             var task = InitAsync();
             if (task != null)
             {
@@ -32,7 +31,7 @@ public class Main : MonoBehaviour
 
     static IEnumerator InitAsync()
     {
-        AssetBundleManager.SetSourceAssetBundleURL(PathManager.GetReadOnlyPathWithPrefix("/"));
+        AssetBundleManager.SetSourceAssetBundleURL(PathManager.GetReadOnlyPathWithPrefix(""));
         var request = AssetBundleManager.Initialize();
         if (request == null)
         {
