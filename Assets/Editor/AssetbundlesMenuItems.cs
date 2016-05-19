@@ -22,7 +22,7 @@ namespace AssetBundles
 		[MenuItem ("AssetBundle/Build AssetBundles")]
 		static public void BuildAssetBundles ()
 		{
-			AssetBuildTool.BuildAssetBundles();
+			AssetBuildTool.BuildAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 		}
 	}
 }
