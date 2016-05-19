@@ -21,6 +21,31 @@ public class Main : MonoBehaviour
         ResourceManager.Instance.LoadResourceBytes("Config/Engine.json", bytes =>
         {
             ConfigManager.EngineConfig = JsonUtility.FromJson<EngineConfig>(Encoding.UTF8.GetString(bytes));
+            if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                if (ConfigManager.EngineConfig.OpenBugly)
+                {
+                    Debug.Log("Open Bugly");
+                    if (Debug.isDebugBuild)
+                    {
+                        BuglyAgent.ConfigDebugMode(true);
+                    }
+                    else
+                    {
+                        BuglyAgent.ConfigDebugMode(false);
+                    }
+                    if (Application.platform == RuntimePlatform.Android)
+                    {
+                        BuglyAgent.InitWithAppId("900026712");
+                    }
+                    else if (Application.platform == RuntimePlatform.IPhonePlayer)
+                    {
+                        BuglyAgent.InitWithAppId("900026732");
+                    }
+                    BuglyAgent.EnableExceptionHandler();
+                }
+            }
+
             var task = InitAsync();
             if (task != null)
             {
