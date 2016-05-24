@@ -104,6 +104,7 @@ public class UnityBuildTool{
             case BuildTarget.WebPlayer:
             case BuildTarget.WebPlayerStreamed:
             case BuildTarget.WebGL:
+            case BuildTarget.iOS:
                 return "";
             // Add more build targets for your own.
             default:

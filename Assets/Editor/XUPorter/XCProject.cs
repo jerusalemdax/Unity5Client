@@ -12,48 +12,48 @@ namespace UnityEditor.XCodeEditor
 		private PBXDictionary _datastore;
 		public PBXDictionary _objects;
 		//private PBXDictionary _configurations;
-		
+
 		private PBXGroup _rootGroup;
 		//private string _defaultConfigurationName;
 		private string _rootObjectKey;
-	
+
 		public string projectRootPath { get; private set; }
 		private FileInfo projectFileInfo;
-		
+
 		public string filePath { get; private set; }
 		//private string sourcePathRoot;
 		private bool modified = false;
-		
+
 		#region Data
-		
+
 		// Objects
 		private PBXSortedDictionary<PBXBuildFile> _buildFiles;
 		private PBXSortedDictionary<PBXGroup> _groups;
 		private PBXSortedDictionary<PBXFileReference> _fileReferences;
 		private PBXDictionary<PBXNativeTarget> _nativeTargets;
-		
+
 		private PBXDictionary<PBXFrameworksBuildPhase> _frameworkBuildPhases;
 		private PBXDictionary<PBXResourcesBuildPhase> _resourcesBuildPhases;
 		private PBXDictionary<PBXShellScriptBuildPhase> _shellScriptBuildPhases;
 		private PBXDictionary<PBXSourcesBuildPhase> _sourcesBuildPhases;
 		private PBXDictionary<PBXCopyFilesBuildPhase> _copyBuildPhases;
-				
+
 		private PBXDictionary<PBXVariantGroup> _variantGroups;
 		private PBXDictionary<XCBuildConfiguration> _buildConfigurations;
 		private PBXSortedDictionary<XCConfigurationList> _configurationLists;
-		
+
 		private PBXProject _project;
-		
+
 		#endregion
 
 
 		#region Constructor
-		
+
 		public XCProject()
 		{
-			
+
 		}
-		
+
 		public XCProject( string filePath ) : this()
 		{
 
@@ -61,7 +61,7 @@ namespace UnityEditor.XCodeEditor
 				Debug.LogWarning( "XCode project path does not exist: " + filePath );
 				return;
 			}
-			
+
 			if( filePath.EndsWith( ".xcodeproj" ) ) {
 				Debug.Log( "Opening project " + filePath );
 				this.projectRootPath = Path.GetDirectoryName( filePath );
@@ -73,7 +73,7 @@ namespace UnityEditor.XCodeEditor
 					Debug.LogWarning( "Error: missing xcodeproj file" );
 					return;
 				}
-				
+
 				this.projectRootPath = filePath;
 				//if the path is relative to the project, we need to make it absolute
 				if (!System.IO.Path.IsPathRooted(projectRootPath))
@@ -81,10 +81,10 @@ namespace UnityEditor.XCodeEditor
 				//Debug.Log ("projectRootPath adjusted to " + projectRootPath);
 				this.filePath = projects[ 0 ];
 			}
-			
+
 			projectFileInfo = new FileInfo( Path.Combine( this.filePath, "project.pbxproj" ) );
 			string contents = projectFileInfo.OpenText().ReadToEnd();
-			
+
 			PBXParser parser = new PBXParser();
 			_datastore = parser.Decode( contents );
 			if( _datastore == null ) {
@@ -95,10 +95,10 @@ namespace UnityEditor.XCodeEditor
 				Debug.Log( "Errore " + _datastore.Count );
 				return;
 			}
-			
+
 			_objects = (PBXDictionary)_datastore["objects"];
 			modified = false;
-			
+
 			_rootObjectKey = (string)_datastore["rootObject"];
 			if( !string.IsNullOrEmpty( _rootObjectKey ) ) {
 				_project = new PBXProject( _rootObjectKey, (PBXDictionary)_objects[ _rootObjectKey ] );
@@ -111,24 +111,24 @@ namespace UnityEditor.XCodeEditor
 			}
 
 		}
-		
+
 		#endregion
 
 
 		#region Properties
-		
+
 		public PBXProject project {
 			get {
 				return _project;
 			}
 		}
-		
+
 		public PBXGroup rootGroup {
 			get {
 				return _rootGroup;
 			}
 		}
-		
+
 		public PBXSortedDictionary<PBXBuildFile> buildFiles {
 			get {
 				if( _buildFiles == null ) {
@@ -137,7 +137,7 @@ namespace UnityEditor.XCodeEditor
 				return _buildFiles;
 			}
 		}
-		
+
 		public PBXSortedDictionary<PBXGroup> groups {
 			get {
 				if( _groups == null ) {
@@ -146,7 +146,7 @@ namespace UnityEditor.XCodeEditor
 				return _groups;
 			}
 		}
-		
+
 		public PBXSortedDictionary<PBXFileReference> fileReferences {
 			get {
 				if( _fileReferences == null ) {
@@ -155,7 +155,7 @@ namespace UnityEditor.XCodeEditor
 				return _fileReferences;
 			}
 		}
-		
+
 		public PBXDictionary<PBXVariantGroup> variantGroups {
 			get {
 				if( _variantGroups == null ) {
@@ -164,7 +164,7 @@ namespace UnityEditor.XCodeEditor
 				return _variantGroups;
 			}
 		}
-		
+
 		public PBXDictionary<PBXNativeTarget> nativeTargets {
 			get {
 				if( _nativeTargets == null ) {
@@ -173,7 +173,7 @@ namespace UnityEditor.XCodeEditor
 				return _nativeTargets;
 			}
 		}
-		
+
 		public PBXDictionary<XCBuildConfiguration> buildConfigurations {
 			get {
 				if( _buildConfigurations == null ) {
@@ -182,7 +182,7 @@ namespace UnityEditor.XCodeEditor
 				return _buildConfigurations;
 			}
 		}
-		
+
 		public PBXSortedDictionary<XCConfigurationList> configurationLists {
 			get {
 				if( _configurationLists == null ) {
@@ -191,7 +191,7 @@ namespace UnityEditor.XCodeEditor
 				return _configurationLists;
 			}
 		}
-		
+
 		public PBXDictionary<PBXFrameworksBuildPhase> frameworkBuildPhases {
 			get {
 				if( _frameworkBuildPhases == null ) {
@@ -200,7 +200,7 @@ namespace UnityEditor.XCodeEditor
 				return _frameworkBuildPhases;
 			}
 		}
-	
+
 		public PBXDictionary<PBXResourcesBuildPhase> resourcesBuildPhases {
 			get {
 				if( _resourcesBuildPhases == null ) {
@@ -209,7 +209,7 @@ namespace UnityEditor.XCodeEditor
 				return _resourcesBuildPhases;
 			}
 		}
-	
+
 		public PBXDictionary<PBXShellScriptBuildPhase> shellScriptBuildPhases {
 			get {
 				if( _shellScriptBuildPhases == null ) {
@@ -218,7 +218,7 @@ namespace UnityEditor.XCodeEditor
 				return _shellScriptBuildPhases;
 			}
 		}
-	
+
 		public PBXDictionary<PBXSourcesBuildPhase> sourcesBuildPhases {
 			get {
 				if( _sourcesBuildPhases == null ) {
@@ -227,7 +227,7 @@ namespace UnityEditor.XCodeEditor
 				return _sourcesBuildPhases;
 			}
 		}
-	
+
 		public PBXDictionary<PBXCopyFilesBuildPhase> copyBuildPhases {
 			get {
 				if( _copyBuildPhases == null ) {
@@ -241,19 +241,19 @@ namespace UnityEditor.XCodeEditor
 
 
 		#region PBXMOD
-		
+
 		public bool AddOtherCFlags( string flag )
 		{
-			return AddOtherCFlags( new PBXList( flag ) ); 
+			return AddOtherCFlags( new PBXList( flag ) );
 		}
-		
+
 		public bool AddOtherCFlags( PBXList flags )
 		{
 			foreach( KeyValuePair<string, XCBuildConfiguration> buildConfig in buildConfigurations ) {
 				buildConfig.Value.AddOtherCFlags( flags );
 			}
 			modified = true;
-			return modified;	
+			return modified;
 		}
 
 		public bool AddOtherLinkerFlagsWithForceLoad(string absoluteFilePath){
@@ -271,18 +271,18 @@ namespace UnityEditor.XCodeEditor
 
 		public bool AddOtherLinkerFlags( string flag )
 		{
-			return AddOtherLinkerFlags( new PBXList( flag ) ); 
+			return AddOtherLinkerFlags( new PBXList( flag ) );
 		}
-		
+
 		public bool AddOtherLinkerFlags( PBXList flags )
 		{
 			foreach( KeyValuePair<string, XCBuildConfiguration> buildConfig in buildConfigurations ) {
 				buildConfig.Value.AddOtherLinkerFlags( flags );
 			}
 			modified = true;
-			return modified;	
+			return modified;
 		}
-		
+
 		public bool overwriteBuildSetting( string settingName, string newValue, string buildConfigName = "all") {
 			Debug.Log("overwriteBuildSetting " + settingName + " " + newValue + " " + buildConfigName);
 			foreach( KeyValuePair<string, XCBuildConfiguration> buildConfig in buildConfigurations ) {
@@ -303,7 +303,7 @@ namespace UnityEditor.XCodeEditor
 		{
 			return AddHeaderSearchPaths( new PBXList( path ) );
 		}
-		
+
 		public bool AddHeaderSearchPaths( PBXList paths )
 		{
 			Debug.Log ("AddHeaderSearchPaths " + paths);
@@ -313,12 +313,12 @@ namespace UnityEditor.XCodeEditor
 			modified = true;
 			return modified;
 		}
-		
+
 		public bool AddLibrarySearchPaths( string path )
 		{
 			return AddLibrarySearchPaths( new PBXList( path ) );
 		}
-		
+
 		public bool AddLibrarySearchPaths( PBXList paths )
 		{
 			Debug.Log ("AddLibrarySearchPaths " + paths);
@@ -328,7 +328,7 @@ namespace UnityEditor.XCodeEditor
 			modified = true;
 			return modified;
 		}
-		
+
 		public bool AddFrameworkSearchPaths( string path )
 		{
 			return AddFrameworkSearchPaths( new PBXList( path ) );
@@ -342,16 +342,16 @@ namespace UnityEditor.XCodeEditor
 			modified = true;
 			return modified;
 		}
-		
+
 		public object GetObject( string guid )
 		{
 			return _objects[guid];
 		}
-		
+
 		public PBXDictionary AddFile( string filePath, PBXGroup parent = null, string tree = "SOURCE_ROOT", bool createBuildFiles = true, bool weak = false )
 		{
-			//Debug.Log("AddFile " + filePath + ", " + parent + ", " + tree + ", " + (createBuildFiles? "TRUE":"FALSE") + ", " + (weak? "TRUE":"FALSE") ); 
-			
+			//Debug.Log("AddFile " + filePath + ", " + parent + ", " + tree + ", " + (createBuildFiles? "TRUE":"FALSE") + ", " + (weak? "TRUE":"FALSE") );
+
 			PBXDictionary results = new PBXDictionary();
 			if (filePath == null) {
 				Debug.LogError ("AddFile called with null filePath");
@@ -359,7 +359,7 @@ namespace UnityEditor.XCodeEditor
 			}
 
 			string absPath = string.Empty;
-			
+
 			if( Path.IsPathRooted( filePath ) ) {
 				Debug.Log( "Path is Rooted" );
 				absPath = filePath;
@@ -367,16 +367,16 @@ namespace UnityEditor.XCodeEditor
 			else if( tree.CompareTo( "SDKROOT" ) != 0) {
 				absPath = Path.Combine( Application.dataPath, filePath );
 			}
-			
+
 			if( !( File.Exists( absPath ) || Directory.Exists( absPath ) ) && tree.CompareTo( "SDKROOT" ) != 0 ) {
 				Debug.Log( "Missing file: " + filePath );
 				return results;
 			}
 			else if( tree.CompareTo( "SOURCE_ROOT" ) == 0 ) {
 				Debug.Log( "Source Root File" );
-				System.Uri fileURI = new System.Uri( absPath );
-				System.Uri rootURI = new System.Uri( ( projectRootPath + "/." ) );
-				filePath = rootURI.MakeRelativeUri( fileURI ).ToString();
+				System.Uri fileURI = new System.Uri(Path.GetFullPath(absPath));
+				System.Uri rootURI = new System.Uri(Path.GetFullPath(projectRootPath + "/Unity-iPhone.xcodeproj"));
+				filePath = System.Uri.UnescapeDataString(rootURI.MakeRelativeUri( fileURI ).ToString().Replace('/', Path.DirectorySeparatorChar));
 			}
 			else if( tree.CompareTo("GROUP") == 0) {
 				Debug.Log( "Group File" );
@@ -386,22 +386,22 @@ namespace UnityEditor.XCodeEditor
 			if( parent == null ) {
 				parent = _rootGroup;
 			}
-			
+
 			//Check if there is already a file
-			PBXFileReference fileReference = GetFile( System.IO.Path.GetFileName( filePath ) );	
+			PBXFileReference fileReference = GetFile( System.IO.Path.GetFileName( filePath ) );
 			if( fileReference != null ) {
 				Debug.Log("File already exists: " + filePath); //not a warning, because this is normal for most builds!
 				return null;
 			}
-			
+
 			fileReference = new PBXFileReference( filePath, (TreeEnum)System.Enum.Parse( typeof(TreeEnum), tree ) );
 			parent.AddChild( fileReference );
 			fileReferences.Add( fileReference );
 			results.Add( fileReference.guid, fileReference );
-			
+
 			//Create a build file for reference
 			if( !string.IsNullOrEmpty( fileReference.buildPhase ) && createBuildFiles ) {
-				
+
 				switch( fileReference.buildPhase ) {
 					case "PBXFrameworksBuildPhase":
 						foreach( KeyValuePair<string, PBXFrameworksBuildPhase> currentObject in frameworkBuildPhases ) {
@@ -410,11 +410,11 @@ namespace UnityEditor.XCodeEditor
 						if ( !string.IsNullOrEmpty( absPath ) && ( tree.CompareTo( "SOURCE_ROOT" ) == 0 )) {
 							string libraryPath = Path.Combine( "$(SRCROOT)", Path.GetDirectoryName( filePath ) );
 							if (File.Exists(absPath)) {
-								this.AddLibrarySearchPaths( new PBXList( libraryPath ) ); 
+								this.AddLibrarySearchPaths( new PBXList( libraryPath ) );
 							} else {
-								this.AddFrameworkSearchPaths( new PBXList( libraryPath ) );  
+								this.AddFrameworkSearchPaths( new PBXList( libraryPath ) );
 							}
-							
+
 						}
 						break;
 					case "PBXResourcesBuildPhase":
@@ -468,7 +468,7 @@ namespace UnityEditor.XCodeEditor
 		public int GetBuildActionMask()
 		{
 			int buildActionMask = 0;
-			foreach( var currentObject in copyBuildPhases ) 
+			foreach( var currentObject in copyBuildPhases )
 			{
 				buildActionMask = (int)currentObject.Value.data["buildActionMask"];
 				break;
@@ -488,7 +488,7 @@ namespace UnityEditor.XCodeEditor
 			}
 
 			//check if embed framework buildPhase exist
-			foreach( var currentObject in copyBuildPhases ) 
+			foreach( var currentObject in copyBuildPhases )
 			{
 				object nameObj = null;
 				if (currentObject.Value.data.TryGetValue("name", out nameObj))
@@ -512,7 +512,7 @@ namespace UnityEditor.XCodeEditor
 			Debug.Log( "Add Embed Framework: " + fileName );
 
 			//Check if there is already a file
-			PBXFileReference fileReference = GetFile( System.IO.Path.GetFileName( fileName ) );	
+			PBXFileReference fileReference = GetFile( System.IO.Path.GetFileName( fileName ) );
 			if( fileReference == null ) {
 				Debug.Log("Embed Framework must added already: " + fileName);
 				return;
@@ -563,7 +563,7 @@ namespace UnityEditor.XCodeEditor
 			buildFiles.Add( buildFile );
 			currentObject.Value.AddBuildFile( buildFile );
 		}
-		
+
 		public bool AddFolder( string folderPath, PBXGroup parent = null, string[] exclude = null, bool recursive = true, bool createBuildFile = true )
 		{
 			Debug.Log("Folder PATH: "+folderPath);
@@ -583,12 +583,12 @@ namespace UnityEditor.XCodeEditor
 				Debug.Log("Exclude was null");
  				exclude = new string[] {};
 			}
- 			
+
  			if( parent == null ){
 				Debug.Log("Parent was null");
  				parent = rootGroup;
 			}
-			
+
 			// Create group
 			PBXGroup newGroup = GetGroup( sourceDirectoryInfo.Name, null /*relative path*/, parent );
 			Debug.Log("New Group created");
@@ -602,13 +602,13 @@ namespace UnityEditor.XCodeEditor
 					AddFile( directory, newGroup, "SOURCE_ROOT", createBuildFile );
 					continue;
 				}
-				
+
 				if( recursive ) {
 					Debug.Log( "recursive" );
 					AddFolder( directory, newGroup, exclude, recursive, createBuildFile );
 				}
 			}
-			
+
 			// Adding files.
 			string regexExclude = string.Format( @"{0}", string.Join( "|", exclude ) );
 			foreach( string file in Directory.GetFiles( folderPath ) ) {
@@ -618,7 +618,7 @@ namespace UnityEditor.XCodeEditor
 				Debug.Log("Adding Files for Folder");
 				AddFile( file, newGroup, "SOURCE_ROOT", createBuildFile );
 			}
-			
+
 			modified = true;
 			return modified;
 		}
@@ -630,7 +630,7 @@ namespace UnityEditor.XCodeEditor
 
 			if( exclude == null )
 				exclude = new string[] {};
-			
+
 			if( parent == null )
 				parent = rootGroup;
 
@@ -644,7 +644,7 @@ namespace UnityEditor.XCodeEditor
 			string nom = sourceDirectoryInfo.Name;
 			string region = nom.Substring(0, nom.Length - ".lproj".Length);
 			project.AddRegion(region);
-			
+
 			// Adding files.
 			string regexExclude = string.Format( @"{0}", string.Join( "|", exclude ) );
 			foreach( string file in Directory.GetFiles( folderPath ) ) {
@@ -661,10 +661,10 @@ namespace UnityEditor.XCodeEditor
 
 				AddFile( file, variant, "GROUP", createBuildFile );
 			}
-			
+
 			modified = true;
 			return modified;
-		}		
+		}
 		#endregion
 
 		#region Getters
@@ -673,25 +673,25 @@ namespace UnityEditor.XCodeEditor
 			if( string.IsNullOrEmpty( name ) ) {
 				return null;
 			}
-			
+
 			foreach( KeyValuePair<string, PBXFileReference> current in fileReferences ) {
 				if( !string.IsNullOrEmpty( current.Value.name ) && current.Value.name.CompareTo( name ) == 0 ) {
 					return current.Value;
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		public PBXGroup GetGroup( string name, string path = null, PBXGroup parent = null )
 		{
 			if( string.IsNullOrEmpty( name ) )
 				return null;
-			
+
 			if( parent == null ) parent = rootGroup;
-			
+
 			foreach( KeyValuePair<string, PBXGroup> current in groups ) {
-				if( string.IsNullOrEmpty( current.Value.name ) ) { 
+				if( string.IsNullOrEmpty( current.Value.name ) ) {
 					if( current.Value.path.CompareTo( name ) == 0 && parent.HasChild( current.Key ) ) {
 						return current.Value;
 					}
@@ -703,14 +703,14 @@ namespace UnityEditor.XCodeEditor
 			PBXGroup result = new PBXGroup( name, path );
 			groups.Add( result );
 			parent.AddChild( result );
-			
+
 			modified = true;
 			return result;
 		}
-			
+
 		#endregion
 
-		#region Mods		
+		#region Mods
 		public void ApplyMod( string pbxmod )
 		{
 			XCMod mod = new XCMod( pbxmod );
@@ -719,19 +719,19 @@ namespace UnityEditor.XCodeEditor
 			}
 			ApplyMod( mod );
 		}
-		
+
 		public void ApplyMod( XCMod mod )
-		{	
+		{
 			PBXGroup modGroup = this.GetGroup( mod.group );
-			
+
 			Debug.Log( "Adding libraries..." );
-			
+
 			foreach( XCModFile libRef in mod.libs ) {
 				string completeLibPath = System.IO.Path.Combine( "usr/lib", libRef.filePath );
 				Debug.Log ("Adding library " + completeLibPath);
 				this.AddFile( completeLibPath, modGroup, "SDKROOT", true, libRef.isWeak );
 			}
-			
+
 			Debug.Log( "Adding frameworks..." );
 			PBXGroup frameworkGroup = this.GetGroup( "Frameworks" );
 			foreach( string framework in mod.frameworks ) {
@@ -760,14 +760,14 @@ namespace UnityEditor.XCodeEditor
 					this.AddEmbedFramework(absoluteFilePath);
 				}
 			}
-			
+
 			Debug.Log( "Adding folders..." );
 			foreach( string folderPath in mod.folders ) {
 				string absoluteFolderPath = System.IO.Path.Combine( Application.dataPath, folderPath );
 				Debug.Log ("Adding folder " + absoluteFolderPath);
 				this.AddFolder( absoluteFolderPath, modGroup, (string[])mod.excludes.ToArray( typeof(string) ) );
 			}
-			
+
 			Debug.Log( "Adding headerpaths..." );
 			foreach( string headerpath in mod.headerpaths ) {
 				if (headerpath.Contains("$(inherited)")) {
@@ -796,10 +796,10 @@ namespace UnityEditor.XCodeEditor
 
 			this.Consolidate();
 		}
-		
+
 		#endregion
 
-		#region Savings	
+		#region Savings
 		public void Consolidate()
 		{
 			PBXDictionary consolidated = new PBXDictionary();
@@ -823,11 +823,11 @@ namespace UnityEditor.XCodeEditor
 		public void Backup()
 		{
 			string backupPath = Path.Combine( this.filePath, "project.backup.pbxproj" );
-			
+
 			// Delete previous backup file
 			if( File.Exists( backupPath ) )
 				File.Delete( backupPath );
-			
+
 			// Backup original pbxproj file first
 			File.Copy( System.IO.Path.Combine( this.filePath, "project.pbxproj" ), backupPath );
 		}
@@ -839,14 +839,14 @@ namespace UnityEditor.XCodeEditor
                 File.Delete( path );
 		}
 
-		private void CreateNewProject(PBXDictionary result, string path) 
+		private void CreateNewProject(PBXDictionary result, string path)
 		{
 			PBXParser parser = new PBXParser();
 			StreamWriter saveFile = File.CreateText( path );
 			saveFile.Write( parser.Encode( result, true ) );
 			saveFile.Close();
 		}
-		
+
 		/// <summary>
 		/// Saves a project after editing.
 		/// </summary>
@@ -856,12 +856,12 @@ namespace UnityEditor.XCodeEditor
 			result.Add( "archiveVersion", 1 );
 			result.Add( "classes", new PBXDictionary() );
 			result.Add( "objectVersion", 46 );
-			
+
 			Consolidate();
 			result.Add( "objects", _objects );
-			
+
 			result.Add( "rootObject", _rootObjectKey );
-			
+
 			string projectPath = Path.Combine( this.filePath, "project.pbxproj" );
 
 			// Delete old project file, in case of an IOException 'Sharing violation on path Error'
@@ -870,7 +870,7 @@ namespace UnityEditor.XCodeEditor
 			// Parse result object directly into file
 			CreateNewProject(result,projectPath);
 		}
-		
+
 		/**
 		* Raw project data.
 		*/
@@ -883,7 +883,7 @@ namespace UnityEditor.XCodeEditor
 
 		public void Dispose()
    		{
-   		
+
 	   	}
 	}
 }
