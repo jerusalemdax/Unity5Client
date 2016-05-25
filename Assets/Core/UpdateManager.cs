@@ -19,7 +19,7 @@ class UpdateManager
     public void Start()
     {
         Debug.Log("UpdateManager Start");
-        UIManager.ShowPanel("UpdatePanel");
+        UIManager.Instance.ShowPanel("UpdatePanel");
     }
 
     public void OnDestroy()

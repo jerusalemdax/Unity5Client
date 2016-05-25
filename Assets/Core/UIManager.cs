@@ -3,13 +3,27 @@ using AssetBundles;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager
 {
-    public static void Init()
+    private static UIManager _instance;
+
+    public static UIManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new UIManager();
+            }
+            return _instance;
+        }
+    }
+
+    public void Init()
     {
         Debug.Log("UIManager Start");
         GameObject go = new GameObject("UIManager");
-        DontDestroyOnLoad(go);
+        Object.DontDestroyOnLoad(go);
         Canvas canvas = go.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         CanvasScaler scaler = go.AddComponent<CanvasScaler>();
@@ -19,7 +33,7 @@ public class UIManager : MonoBehaviour
         scaler.matchWidthOrHeight = 1.0f;
     }
 
-    public static void ShowPanel(string panelName)
+    public void ShowPanel(string panelName)
     {
         Debug.Log("ShowPanel: " + panelName);
 
@@ -27,7 +41,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-    static IEnumerator LoadPrefabs(string panelName)
+    IEnumerator LoadPrefabs(string panelName)
     {
         string assetBundleName = "Prefabs/" + panelName + ".prefab";
         var request = AssetBundleManager.LoadAssetAsync(assetBundleName.ToLower(), panelName, typeof(GameObject));

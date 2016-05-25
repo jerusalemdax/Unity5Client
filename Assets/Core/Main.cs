@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.IO;
 using System.Text;
 using AssetBundles;
 using UnityEngine;
@@ -25,7 +24,7 @@ public class Main : MonoBehaviour
             {
                 if (ConfigManager.EngineConfig.OpenBugly)
                 {
-                    Debug.Log("Open Bugly");
+                    Debug.Log("Bugly version: " + BuglyAgent.PluginVersion);
                     if (Debug.isDebugBuild)
                     {
                         BuglyAgent.ConfigDebugMode(true);
@@ -66,10 +65,10 @@ public class Main : MonoBehaviour
         {
             yield return Main.StartCoroutineFunc(request);
         }
-        UIManager.Init();
+        UIManager.Instance.Init();
         if (ConfigManager.EngineConfig.ShowStat)
         {
-            UIManager.ShowPanel("StatPanel");
+            UIManager.Instance.ShowPanel("StatPanel");
         }
         UpdateManager.Instance.Start();
     }

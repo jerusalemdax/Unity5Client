@@ -33,6 +33,11 @@ static bool UIManager_UIManager1(JSVCall vc, int argc)
 // fields
 
 // properties
+static void UIManager_Instance(JSVCall vc)
+{
+        var result = UIManager.Instance;
+        JSMgr.datax.setObject((int)JSApi.SetType.Rval, result);
+}
 
 // methods
 
@@ -41,7 +46,7 @@ static bool UIManager_Init(JSVCall vc, int argc)
     int len = argc;
     if (len == 0) 
     {
-        UIManager.Init();
+        ((UIManager)vc.csObj).Init();
     }
 
     return true;
@@ -53,7 +58,7 @@ static bool UIManager_ShowPanel__String(JSVCall vc, int argc)
     if (len == 1) 
     {
         System.String arg0 = (System.String)JSApi.getStringS((int)JSApi.GetType.Arg);
-        UIManager.ShowPanel(arg0);
+        ((UIManager)vc.csObj).ShowPanel(arg0);
     }
 
     return true;
@@ -72,6 +77,7 @@ public static void __Register()
     };
     ci.properties = new JSMgr.CSCallbackProperty[]
     {
+        UIManager_Instance,
 
     };
     ci.constructors = new JSMgr.MethodCallBackInfo[]
