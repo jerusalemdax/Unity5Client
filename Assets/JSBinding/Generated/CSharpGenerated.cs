@@ -12,6 +12,7 @@ public class CSharpGenerated
         UnityEngine_BehaviourGenerated.__Register();
         UnityEngine_ComponentGenerated.__Register();
         UnityEngine_ObjectGenerated.__Register();
+        UnityEngine_DebugGenerated.__Register();
 
     }
 }

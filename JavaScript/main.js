@@ -1,5 +1,5 @@
-test = function ()
+start = function ()
 {
-	print("ping test1");
+	UIManager.get_Instance().ShowPanel("UpdatePanel");
 };
 

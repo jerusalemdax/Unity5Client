@@ -787,6 +787,7 @@ public class JSBindingSettings
             typeof(UnityEngine.Behaviour),
             typeof(UnityEngine.Component),
             typeof(UnityEngine.Object),
+            typeof(UnityEngine.Debug),
 //#endif
     };
 

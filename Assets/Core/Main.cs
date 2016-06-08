@@ -65,13 +65,12 @@ public class Main : MonoBehaviour
         {
             yield return Main.StartCoroutineFunc(request);
         }
-        JSManager.Instance.Init();
         UIManager.Instance.Init();
         if (ConfigManager.EngineConfig.ShowStat)
         {
             UIManager.Instance.ShowPanel("StatPanel");
         }
-        UpdateManager.Instance.Start();
+        JSManager.Instance.Init();
     }
 
     void Update()
