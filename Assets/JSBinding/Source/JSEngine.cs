@@ -1,19 +1,18 @@
 using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using jsval = JSApi.jsval;
+
 /// <summary>
 /// JSEngine
 /// Represents a JavaScript Engine object
 /// In order to run JavaScript, there must be one and only one JSEngine object in the scene
 /// You can find JSEngine prefab at path 'JSBinding/Prefabs/_JSEngine.prefab'
-/// 
+///
 /// JSEngine must have a lower execution order than JSComponent.
 /// You can set script execution order by click menu Edit | Project Settings | Script Execution Order
 /// for example, set JSEngine to 400, set JSComponent to 500
 /// </summary>
+
 public class JSEngine : MonoBehaviour
 {
     public static JSEngine inst;
@@ -38,13 +37,13 @@ public class JSEngine : MonoBehaviour
     public JSFileLoader jsLoader;
 
     /*
-     * 
+     *
      */
     public string[] InitLoadScripts = new string[0];
 
     public void OnInitJSEngine(bool bSuccess)
     {
-        /* 
+        /*
          * Debugging is only available in desktop platform
          * */
         mDebug = debug && JSC;
@@ -55,7 +54,10 @@ public class JSEngine : MonoBehaviour
                 for (var i = 0; i < InitLoadScripts.Length; i++)
                 {
                     // JSMgr.ExecuteFile(InitLoadScripts[i]);
-                    JSMgr.evaluate(InitLoadScripts[i]);
+                    if (!JSMgr.evaluate(InitLoadScripts[i]))
+                    {
+                        Debug.Log(string.Format("JS: evaluate {0} error", InitLoadScripts[i]));
+                    }
                 }
             }
 
@@ -86,7 +88,7 @@ public class JSEngine : MonoBehaviour
         {
             if (jse == null)
             {
-                GameObject jseGO = GameObject.Find("_JSEngine");
+                GameObject jseGO = GameObject.Find("JSManager");
                 if (jseGO == null)
                 {
                     initFail = true;
@@ -121,6 +123,10 @@ public class JSEngine : MonoBehaviour
         }
 
 		Debug.Log (JSC ? "JS: Use JSC" : "JS: Not Use JSC");
+    }
+
+    void Start()
+    {
         JSEngine.FirstInit(this);
     }
 

@@ -912,10 +912,10 @@ public class JSBindingSettings
     }
 
     // extension (including ".")
-    public static string jsExtension = ".javascript";
+    public static string jsExtension = ".js";
     public static string jscExtension = ".bytes";
     // directory to save js files
-    public static string jsDir = Application.streamingAssetsPath + "/JavaScript";
+    public static string jsDir = Application.dataPath + "/../JavaScript";
 	public static string jsRelDir = "Assets/StreamingAssets/JavaScript";
     public static string mergedJsDir = Application.dataPath + "/../Temp/JavaScript_js";
     public static string jscDir = Application.dataPath + "/JSC";
