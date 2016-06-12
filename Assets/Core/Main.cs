@@ -11,7 +11,6 @@ public class Main : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        DontDestroyOnLoad(this);
     }
 
     void Start()
