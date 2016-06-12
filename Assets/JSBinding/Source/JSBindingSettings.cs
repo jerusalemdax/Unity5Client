@@ -15,12 +15,13 @@ public class JSBindingSettings
 
     public static Type[] classes = new Type[]
     {
-            typeof(UIManager),
-            typeof(MonoBehaviour),
-            typeof(Behaviour),
-            typeof(Component),
-            typeof(UnityEngine.Object),
-            typeof(Debug),
+        typeof(SceneManagerEx),
+        typeof(UIManager),
+        typeof(MonoBehaviour),
+        typeof(Behaviour),
+        typeof(Component),
+        typeof(UnityEngine.Object),
+        typeof(Debug),
     };
 
 

@@ -7,6 +7,7 @@ public class CSharpGenerated
         {
             Debug.LogError(999777454);
         }
+        SceneManagerExGenerated.__Register();
         UIManagerGenerated.__Register();
         UnityEngine_MonoBehaviourGenerated.__Register();
         UnityEngine_BehaviourGenerated.__Register();

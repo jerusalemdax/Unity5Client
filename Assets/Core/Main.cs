@@ -73,7 +73,6 @@ public class Main : MonoBehaviour
         }
         SceneManagerEx.Instance.Init();
         JSManager.Instance.Init();
-        SceneManagerEx.Instance.ShowScene("Login");
     }
 
     void Update()
