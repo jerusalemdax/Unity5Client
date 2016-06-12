@@ -2,6 +2,7 @@
 using System.Text;
 using AssetBundles;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Main : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        DontDestroyOnLoad(this);
     }
 
     void Start()
@@ -70,7 +72,9 @@ public class Main : MonoBehaviour
         {
             UIManager.Instance.ShowPanel("StatPanel");
         }
+        SceneManagerEx.Instance.Init();
         JSManager.Instance.Init();
+        SceneManagerEx.Instance.ShowScene("Login");
     }
 
     void Update()
