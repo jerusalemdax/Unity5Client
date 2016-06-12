@@ -28,6 +28,6 @@ public class JSManager {
         GameObject jsLoader = new GameObject("JSFileLoader");
         jsLoader.transform.parent = go.transform;
         engine.jsLoader = jsLoader.AddComponent<JSFileLoader>();
-        engine.InitLoadScripts = new[] {"include"};
+        engine.InitLoadScripts = new[] {"main"};
     }
 }
