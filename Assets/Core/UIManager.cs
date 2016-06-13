@@ -25,8 +25,10 @@ public class UIManager
         GameObject go = new GameObject("UIManager");
         Object.DontDestroyOnLoad(go);
         Canvas canvas = go.AddComponent<Canvas>();
+        Object.DontDestroyOnLoad(canvas);
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         CanvasScaler scaler = go.AddComponent<CanvasScaler>();
+        Object.DontDestroyOnLoad(scaler);
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(960, 640);
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
