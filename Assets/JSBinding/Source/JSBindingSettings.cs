@@ -17,6 +17,7 @@ public class JSBindingSettings
     {
         typeof(SceneManagerEx),
         typeof(UIManager),
+        typeof(HttpManager),
         typeof(MonoBehaviour),
         typeof(Behaviour),
         typeof(Component),

@@ -9,6 +9,7 @@ public class CSharpGenerated
         }
         SceneManagerExGenerated.__Register();
         UIManagerGenerated.__Register();
+        HttpManagerGenerated.__Register();
         UnityEngine_MonoBehaviourGenerated.__Register();
         UnityEngine_BehaviourGenerated.__Register();
         UnityEngine_ComponentGenerated.__Register();
