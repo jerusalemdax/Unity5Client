@@ -45,7 +45,7 @@ public class UIManager
 
     IEnumerator LoadPrefabs(string panelName)
     {
-        string assetBundleName = "Prefabs/" + panelName + ".prefab";
+        string assetBundleName = "Prefabs/" + panelName + ".prefab.unity3d";
         var request = AssetBundleManager.LoadAssetAsync(assetBundleName.ToLower(), panelName, typeof(GameObject));
         if (request == null)
             yield break;

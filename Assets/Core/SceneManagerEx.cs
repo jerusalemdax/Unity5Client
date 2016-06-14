@@ -37,7 +37,7 @@ public class SceneManagerEx {
 
     private IEnumerator LoadScene(string scene)
     {
-        string assetBundleName = "Scenes/" + scene + ".unity";
+        string assetBundleName = "Scenes/" + scene + ".unity.unity3d";
         var request = AssetBundleManager.LoadLevelAsync(assetBundleName.ToLower(), scene, false); ;
         if (request == null)
             yield break;
