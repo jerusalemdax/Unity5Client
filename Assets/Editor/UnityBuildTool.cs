@@ -62,6 +62,7 @@ public class UnityBuildTool{
         BuildOptions option = isDebug ? BuildOptions.Development : BuildOptions.None;
         string modeString = isDebug ? "/Debug" : "/Release";
         CopyAssetBundlesTo(target, Application.streamingAssetsPath);
+        FileUtil.CopyFileOrDirectory(Path.GetFullPath(Application.dataPath + "/../JavaScript"), Application.streamingAssetsPath + "/JavaScript");
 
         outputPath = outputPath + Utility.GetPlatformForAssetBundles(target) + modeString;
         if (Directory.Exists(outputPath))

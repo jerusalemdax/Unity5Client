@@ -150,7 +150,11 @@ public class JSBindingSettings
     public static string jsExtension = ".js";
     public static string jscExtension = ".bytes";
     // directory to save js files
+#if UNITY_EDITOR
     public static string jsDir = Application.dataPath + "/../JavaScript";
+#else
+    public static string jsDir = PathManager.GetReadOnlyPath("JavaScript");
+#endif
     public static string mergedJsDir = Application.dataPath + "/../Temp/JavaScript_js";
     public static string jscDir = Application.dataPath + "/JSC";
 
