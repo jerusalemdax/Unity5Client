@@ -12,16 +12,14 @@ public class JSApi
      * ****************** Dll define *************************
      */
 
-#if UNITY_EDITOR_WIN || UNITY_EDITOR_OSX
-    const string JSDll = "mozjswrap";
-#elif UNITY_IPHONE
+#if UNITY_IPHONE || UNITY_XBOX360
     const string JSDll = "__Internal";
 #else
     const string JSDll = "mozjswrap";
 #endif
 
     /*
-     * ****************** Callback definition ****************** 
+     * ****************** Callback definition ******************
      */
 
 #if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
@@ -43,14 +41,14 @@ public class JSApi
     [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 #endif
     public delegate int CSEntry(int op, int slot, int index, int bStatic, int argc);
-    
+
 #if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
     [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 #endif
     public delegate void OnObjCollected(int id);
 
     /*
-     * ****************** jsval definition ****************** 
+     * ****************** jsval definition ******************
      */
     enum eValueTag
     {
@@ -77,15 +75,15 @@ public class JSApi
     }
 
     /*
-     * ****************** Debugger stuff ****************** 
+     * ****************** Debugger stuff ******************
      */
 
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 	public static extern void updateDebugger();
 
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public static extern void cleanupDebugger();    
-    
+    public static extern void cleanupDebugger();
+
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public static extern void enableDebugger(string[] paths, UInt32 nums, int port);
 
@@ -96,7 +94,7 @@ public class JSApi
     public static extern int createJSClassObject(string name);
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public static extern int newJSClassObject(string name);
-    
+
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public static extern int InitJSEngine(JSErrorReporter er, CSEntry csEntry, JSNative req, OnObjCollected onObjCollected, JSNative print);
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -105,7 +103,7 @@ public class JSApi
     public static extern void ShutdownJSEngine(int bCleanup);
 
     /*
-     * ****************** Error handle ****************** 
+     * ****************** Error handle ******************
      */
 
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -124,7 +122,7 @@ public class JSApi
     }
 
     /*
-     * ****************** Calling stack ****************** 
+     * ****************** Calling stack ******************
      */
 
     public enum GetType
@@ -355,7 +353,7 @@ public class JSApi
 
 
     /*
-     * ****************** Other APIs ****************** 
+     * ****************** Other APIs ******************
      */
 
     [DllImport(JSDll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
