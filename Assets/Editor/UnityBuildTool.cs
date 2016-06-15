@@ -63,6 +63,7 @@ public class UnityBuildTool{
         string modeString = isDebug ? "/Debug" : "/Release";
         CopyAssetBundlesTo(target, Application.streamingAssetsPath);
         FileUtil.CopyFileOrDirectory(Path.GetFullPath(Application.dataPath + "/../JavaScript"), Application.streamingAssetsPath + "/JavaScript");
+        FileUtil.CopyFileOrDirectory(Path.GetFullPath(Application.dataPath + "/../Config"), Application.streamingAssetsPath + "/Config");
 
         outputPath = outputPath + Utility.GetPlatformForAssetBundles(target) + modeString;
         if (Directory.Exists(outputPath))
@@ -120,7 +121,6 @@ public class UnityBuildTool{
         Directory.CreateDirectory(outputPath);
 
         List<string> copyDirs = new List<string>();
-        copyDirs.Add("Config");
         copyDirs.Add(Utility.GetPlatformForAssetBundles(target));
 
         foreach (var dir in copyDirs)

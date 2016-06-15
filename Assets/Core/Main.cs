@@ -18,9 +18,9 @@ public class Main : MonoBehaviour
         Debug.Log("Unity version: " + Application.unityVersion);
         Debug.Log("Platform: " + Application.platform);
 
-        ResourceManager.Instance.LoadResourceBytes("Config/Engine.json", bytes =>
+        ResourceManager.Instance.LoadConfig("Engine.json", str =>
         {
-            ConfigManager.EngineConfig = JsonUtility.FromJson<EngineConfig>(Encoding.UTF8.GetString(bytes));
+            ConfigManager.EngineConfig = JsonUtility.FromJson<EngineConfig>(str);
             if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
             {
                 if (ConfigManager.EngineConfig.OpenBugly)
@@ -56,7 +56,7 @@ public class Main : MonoBehaviour
 
     static IEnumerator InitAsync()
     {
-        AssetBundleManager.SetSourceAssetBundleURL(PathManager.GetReadOnlyPathWithPrefix(""));
+        AssetBundleManager.SetSourceAssetBundleURL(PathManager.AddFilePrefix(PathManager.GetReadOnlyPath("")));
         var request = AssetBundleManager.Initialize();
         if (request == null)
         {

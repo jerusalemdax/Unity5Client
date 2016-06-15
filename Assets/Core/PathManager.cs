@@ -1,27 +1,20 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 
 public class PathManager
 {
 #if UNITY_EDITOR
     private static string _readWritePath = Application.dataPath + "/../PersistentData/";
     private static string _readOnlyPath = Application.dataPath + "/../StreamingAssets/";
-    private static string _readWritePathWithPrefix = "file:///" + Application.dataPath + "/../PersistentData/";
-    private static string _readOnlyPathWithPrefix = "file:///" + Application.dataPath + "/../StreamingAssets/";
 #elif UNITY_STANDALONE
     private static string _readWritePath = Application.dataPath + "/PersistentData/";
     private static string _readOnlyPath = Application.streamingAssetsPath + "/";
-    private static string _readWritePathWithPrefix = "file:///" + Application.dataPath + "/PersistentData/";
-    private static string _readOnlyPathWithPrefix = "file:///" + Application.streamingAssetsPath + "/";
 #elif UNITY_ANDROID
     private static string _readWritePath = Application.persistentDataPath + "/";
     private static string _readOnlyPath = Application.streamingAssetsPath + "/";
-    private static string _readWritePathWithPrefix = Application.persistentDataPath + "/";
-    private static string _readOnlyPathWithPrefix = Application.streamingAssetsPath + "/";
 #else
     private static string _readWritePath = Application.persistentDataPath + "/";
     private static string _readOnlyPath = Application.streamingAssetsPath + "/";
-    private static string _readWritePathWithPrefix = "file:///" + Application.persistentDataPath + "/";
-    private static string _readOnlyPathWithPrefix = "file:///" + Application.streamingAssetsPath + "/";
 #endif
 
     public static string GetReadWritePath(string path)
@@ -34,13 +27,21 @@ public class PathManager
         return _readOnlyPath + path;
     }
 
-    public static string GetReadWritePathWithPrefix(string path)
+    public static string AddFilePrefix(string str)
     {
-        return _readWritePathWithPrefix + path;
+#if UNITY_ANDROID && !UNITY_EDITOR
+        return str;
+#else
+        return "file:///" + str;
+#endif
     }
 
-    public static string GetReadOnlyPathWithPrefix(string path)
+    public static string GetConfigPath()
     {
-        return _readOnlyPathWithPrefix + path;
+#if UNITY_EDITOR
+        return Path.Combine(Application.dataPath + "/../", "Config");
+#else
+        return GetReadOnlyPath("Config");
+#endif
     }
 }

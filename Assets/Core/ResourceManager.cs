@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.IO;
+using System.Text;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -23,15 +25,18 @@ public class ResourceManager
         }
     }
 
-    public void LoadResourceBytes(string path, Action<byte[]> callback)
+    public void LoadConfig(string path, Action<string> callback)
     {
-        Main.StartCoroutineFunc(LoadResourceBytesCor(path, callback));
+        string configPath = PathManager.AddFilePrefix(Path.Combine(PathManager.GetConfigPath(), path));
+        Main.StartCoroutineFunc(LoadResourceBytesCor(configPath, bytes =>
+        {
+            callback(Encoding.UTF8.GetString(bytes));
+        }));
     }
 
     private IEnumerator LoadResourceBytesCor(string path, Action<byte[]> callback)
     {
-        string fullPath = PathManager.GetReadOnlyPathWithPrefix(path);
-        WWW www = new WWW(fullPath);
+        WWW www = new WWW(path);
         yield return www;
         if (www.isDone)
         {
