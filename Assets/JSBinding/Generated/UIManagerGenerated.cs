@@ -41,6 +41,18 @@ static void UIManager_Instance(JSVCall vc)
 
 // methods
 
+static bool UIManager_ClosePanel__String(JSVCall vc, int argc)
+{
+    int len = argc;
+    if (len == 1) 
+    {
+        System.String arg0 = (System.String)JSApi.getStringS((int)JSApi.GetType.Arg);
+        ((UIManager)vc.csObj).ClosePanel(arg0);
+    }
+
+    return true;
+}
+
 static bool UIManager_Init(JSVCall vc, int argc)
 {
     int len = argc;
@@ -87,6 +99,7 @@ public static void __Register()
     };
     ci.methods = new JSMgr.MethodCallBackInfo[]
     {
+        new JSMgr.MethodCallBackInfo(UIManager_ClosePanel__String, "ClosePanel"),
         new JSMgr.MethodCallBackInfo(UIManager_Init, "Init"),
         new JSMgr.MethodCallBackInfo(UIManager_ShowPanel__String, "ShowPanel"),
 

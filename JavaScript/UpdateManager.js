@@ -3,11 +3,11 @@ var UpdateManager = {
     definition: {
         Start: function (){
             print("UpdateManager Start");
+			UIManager.get_Instance().ShowPanel("UpdatePanel");
             HttpManager.get_Instance().StartHttpGet("http://www.baidu.com", function(str) {
-                print(str);
-                UIManager.get_Instance().ShowPanel("UpdatePanel");
+				SceneManagerEx.get_Instance().ShowScene("Login");
+				UIManager.get_Instance().ClosePanel("UpdatePanel");
             });
-
         }
     }
 };

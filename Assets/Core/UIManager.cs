@@ -40,7 +40,11 @@ public class UIManager
         Debug.Log("ShowPanel: " + panelName);
 
         Main.StartCoroutineFunc(LoadPrefabs(panelName));
+    }
 
+    public void ClosePanel(string panelName)
+    {
+        Object.Destroy(GameObject.Find("UIManager/" + panelName));
     }
 
     IEnumerator LoadPrefabs(string panelName)

@@ -92,14 +92,19 @@ _jstype.staticDefinition.set_Instance = function(v) { return CS.Call(3, 1, 0, tr
 // methods
 
 /* Void */
+_jstype.definition.ClosePanel = function(a0/*String*/) {
+    
+    return CS.Call(4, 1, 0, false, this, a0);
+}
+/* Void */
 _jstype.definition.Init = function() {
     
-    return CS.Call(4, 1, 0, false, this);
+    return CS.Call(4, 1, 1, false, this);
 }
 /* Void */
 _jstype.definition.ShowPanel = function(a0/*String*/) {
     
-    return CS.Call(4, 1, 1, false, this, a0);
+    return CS.Call(4, 1, 2, false, this, a0);
 }
 
 if (typeof(JsTypes) == "undefined")
