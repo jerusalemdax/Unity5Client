@@ -78,7 +78,8 @@ namespace AssetBundles
 		// AssetBundleManifest object which can be used to load the dependecies and check suitable assetBundle variants.
 		public static AssetBundleManifest AssetBundleManifestObject
 		{
-			set {m_AssetBundleManifest = value; }
+			set { m_AssetBundleManifest = value; }
+            get { return m_AssetBundleManifest; }
 		}
 
 		private static void Log(LogType logType, string text)

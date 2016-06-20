@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using AssetBundles;
 
 /// <summary>
 /// JSEngine
@@ -82,7 +84,7 @@ public class JSEngine : MonoBehaviour
     }
 
     // FirstInit may be called from JSComponent!
-    public static void FirstInit(JSEngine jse = null)
+    public static IEnumerator FirstInit(JSEngine jse = null)
     {
         if (!initSuccess && !initFail)
         {
@@ -91,8 +93,12 @@ public class JSEngine : MonoBehaviour
                 GameObject jseGO = GameObject.Find("JSManager");
                 if (jseGO == null)
                 {
-                    initFail = true;
-                    Debug.LogError("_JSEngine gameObject not found. Drag a \"JSBinding/Prefabs/_JSEngine.prefab\" to the scene.");
+                    while (AssetBundleManager.AssetBundleManifestObject == null)
+                    {
+                        yield return null;
+                    }
+                    //initFail = true;
+                    //Debug.LogError("JSManager gameObject not found. Drag a \"JSBinding/Prefabs/_JSEngine.prefab\" to the scene.");
                 }
                 else
                 {
@@ -125,9 +131,9 @@ public class JSEngine : MonoBehaviour
 		Debug.Log (JSC ? "JS: Use JSC" : "JS: Not Use JSC");
     }
 
-    void Start()
+    IEnumerator Start()
     {
-        JSEngine.FirstInit(this);
+        return FirstInit(this);
     }
 
     int jsCallCountPerFrame = 0;

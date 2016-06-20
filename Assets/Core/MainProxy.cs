@@ -3,8 +3,11 @@
 public class MainProxy : MonoBehaviour {
 
 	void Awake () {
-        GameObject go = new GameObject("Main");
-        DontDestroyOnLoad(go);
-        go.AddComponent<Main>();
+	    if (GameObject.Find("Main") == null)
+	    {
+            GameObject go = new GameObject("Main");
+            DontDestroyOnLoad(go);
+            go.AddComponent<Main>();
+        }
     }
 }

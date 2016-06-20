@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Text;
 using AssetBundles;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour
 {
@@ -11,10 +9,6 @@ public class Main : MonoBehaviour
     void Awake()
     {
         Instance = this;
-    }
-
-    void Start()
-    {
         Debug.Log("Unity version: " + Application.unityVersion);
         Debug.Log("Platform: " + Application.platform);
         Debug.Log("Application name: " + Application.productName);
@@ -47,16 +41,10 @@ public class Main : MonoBehaviour
                     BuglyAgent.EnableExceptionHandler();
                 }
             }
-
-            var task = InitAsync();
-            if (task != null)
-            {
-                Main.StartCoroutineFunc(InitAsync());
-            }
         });
     }
 
-    static IEnumerator InitAsync()
+    IEnumerator Start()
     {
         AssetBundleManager.SetSourceAssetBundleURL(PathManager.AddFilePrefix(PathManager.GetReadOnlyPath("")));
         var request = AssetBundleManager.Initialize();
