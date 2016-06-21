@@ -13,4 +13,4 @@ Assets/StreamingAssets.meta
 .DS_Store
 *.userprefs
 StreamingAssets
-!StreamingAssets/Config
+node_modules
