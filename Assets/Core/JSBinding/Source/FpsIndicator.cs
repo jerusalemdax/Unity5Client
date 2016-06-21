@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class FpsIndicator : MonoBehaviour {
 
@@ -11,9 +10,9 @@ public class FpsIndicator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
-	
+
 	// Update is called once per frame
     void Update()
     {

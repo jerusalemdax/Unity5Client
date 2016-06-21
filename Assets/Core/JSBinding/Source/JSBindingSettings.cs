@@ -163,7 +163,7 @@ public class JSBindingSettings
     // a file to save generated js file names
     public static string jsGeneratedFiles { get { return jsDir + "/GeneratedFiles" + jsExtension; } }
     //
-    public static string csGeneratedDir = Application.dataPath + "/JSBinding/Generated";
+    public static string csGeneratedDir = Application.dataPath + "/Core/JSBinding/Generated";
 	public static string sharpkitGeneratedFiles = jsDir + "/SharpKitGeneratedFiles.javascript";
     public static string monoBehaviour2JSComponentName = jsDir + "/MonoBehaviour2JSComponentName.javascript";
 

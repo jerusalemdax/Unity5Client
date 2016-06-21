@@ -1,16 +1,14 @@
 using SharpKit.JavaScript;
-using UnityEngine;
-using System.Collections;
 using System;
 using System.Reflection;
 
 /// <summary>
-/// 
-/// 
+///
+///
 /// All classes in namespace 'jsimp' have separate implement in C# and JavaScript
 /// These classes also need 'JsType' attribute.
-/// 
-/// 
+///
+///
 /// </summary>
 namespace jsimp
 {
@@ -28,7 +26,7 @@ namespace jsimp
         {
             return Activator.CreateInstance<T>();
 		}
-		
+
 		/// <summary>
 		/// </summary>
 		[JsMethod(Code = @"return new type._JsType.ctor();")]
@@ -36,7 +34,7 @@ namespace jsimp
         {
             return Activator.CreateInstance(type);
 		}
-		
+
 		/// <summary>
 		/// </summary>
 		[JsMethod(Code = @"if (obj != null) {
@@ -61,7 +59,7 @@ namespace jsimp
             }
             return false;
 		}
-		
+
 		/// <summary>
 		/// </summary>
 		[JsMethod(Code = @"if (type != null) {
@@ -94,7 +92,7 @@ namespace jsimp
             }
             return null;
 		}
-		
+
 		/// <summary>
 		/// </summary>
 		[JsMethod(Code = @"return this.SetFieldValue(obj, ""_"" + propertyName, value);")]
@@ -128,7 +126,7 @@ namespace jsimp
             }
             return null;
 		}
-		
+
 		/// <summary>
 		/// </summary>
 		[JsMethod(Code = @"if (type != null) {
@@ -148,7 +146,7 @@ namespace jsimp
             }
             return false;
 		}
-		
+
 		/// <summary>
 		/// </summary>
         // in JavaScript, it will be simply
@@ -159,7 +157,7 @@ namespace jsimp
         {
             return a.Equals(b);
 		}
-		
+
 		/// <summary>
 		/// </summary>
 		[JsMethod(Code = @"return type._JsType == Int32Array;")]
@@ -167,7 +165,7 @@ namespace jsimp
         {
             return type == typeof(int[]);
 		}
-		
+
 		/// <summary>
 		/// </summary>
 		// 调用obj的函数，这个函数没有返回值，有任意个参数。

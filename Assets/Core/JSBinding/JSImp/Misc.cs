@@ -1,5 +1,3 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using SharpKit.JavaScript;
 using System;
@@ -31,7 +29,7 @@ return B;")]
         {
             return str.Split(sep.ToCharArray(), System.StringSplitOptions.RemoveEmptyEntries);
         }
-        
+
         [JsMethod(Code = @"var L = collection.length;
 for (var i = 0; i < L; i++)
 {
@@ -52,5 +50,5 @@ for (var i = 0; i < L; i++)
             return Math.Abs(v);
         }
     }
-    
+
 }
