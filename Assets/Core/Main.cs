@@ -12,6 +12,8 @@ public class Main : MonoBehaviour
         Debug.Log("Unity version: " + Application.unityVersion);
         Debug.Log("Platform: " + Application.platform);
         Debug.Log("Application name: " + Application.productName);
+        Debug.Log("Company name: " + Application.companyName);
+        Debug.Log("Application bundle identifier: " + Application.bundleIdentifier);
         Debug.Log("Application version: " + Application.version);
 
         ResourceManager.Instance.LoadConfig("Engine.json", str =>
