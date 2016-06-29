@@ -41,6 +41,17 @@ static void SceneManagerEx_Instance(JSVCall vc)
 
 // methods
 
+static bool SceneManagerEx_GetShowedSceneName(JSVCall vc, int argc)
+{
+    int len = argc;
+    if (len == 0) 
+    {
+        JSApi.setStringS((int)JSApi.SetType.Rval, ((SceneManagerEx)vc.csObj).GetShowedSceneName());
+    }
+
+    return true;
+}
+
 static bool SceneManagerEx_Init(JSVCall vc, int argc)
 {
     int len = argc;
@@ -87,6 +98,7 @@ public static void __Register()
     };
     ci.methods = new JSMgr.MethodCallBackInfo[]
     {
+        new JSMgr.MethodCallBackInfo(SceneManagerEx_GetShowedSceneName, "GetShowedSceneName"),
         new JSMgr.MethodCallBackInfo(SceneManagerEx_Init, "Init"),
         new JSMgr.MethodCallBackInfo(SceneManagerEx_ShowScene__String, "ShowScene"),
 

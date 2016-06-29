@@ -1,6 +1,7 @@
 ﻿using AssetBundles;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 场景管理器，管理场景的加载和变更。因为UnityEngine已经有一个类叫SceneManager，所以这个自定义的场景管理器叫SceneManagerEx
@@ -33,6 +34,11 @@ public class SceneManagerEx {
         Debug.Log("Show Scene: " + scene);
 
         Main.StartCoroutineFunc(LoadScene(scene));
+    }
+
+    public string GetShowedSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
     }
 
     private IEnumerator LoadScene(string scene)

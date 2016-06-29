@@ -15,6 +15,7 @@ public class JSBindingSettings
 
     public static Type[] classes = new Type[]
     {
+        typeof(ProtocalManager),
         typeof(SceneManagerEx),
         typeof(UIManager),
         typeof(HttpManager),

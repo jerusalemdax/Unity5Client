@@ -4,7 +4,8 @@ var UpdateController = {
         Start: function(){
             print("UpdateController Start");
 			UIManager.get_Instance().ShowPanel("UpdatePanel");
-            HttpManager.get_Instance().StartHttpGet("http://www.baidu.com", function(str) {
+            ProtocalManager.get_Instance().Request("connector.entryHandler.version", "hello", function(str) {
+                print(str);
 				SceneManagerEx.get_Instance().ShowScene("Login");
             });
         },

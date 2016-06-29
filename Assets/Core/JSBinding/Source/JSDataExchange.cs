@@ -48,7 +48,7 @@ public class JSDataExchangeMgr
     /// <summary>
     /// Gets object by type.
     /// for concrete type e.g. setInt32 setString, they know how to return object
-    /// 
+    ///
     /// but for T parameters, type is unknown until runtime
     /// so this function needs a 'Type' argument
     /// which is passed through mTempObj
@@ -158,7 +158,7 @@ public class JSDataExchangeMgr
 //                     IntPtr jsObj = JSApi.JSh_ArgvObject(JSMgr.cx, vc.vp, vc.currIndex++);
 //                     if (jsObj == IntPtr.Zero)
 //                         return null;
-// 
+//
 //                     object csObj = JSMgr.getCSObj(jsObj);
 //                     return csObj;
                 }
@@ -168,16 +168,16 @@ public class JSDataExchangeMgr
 //                     jsval val = new jsval();
 //                     JSApi.JSh_SetJsvalUndefined(ref val);
 //                     getJSValueOfParam(ref val, vc.currIndex++);
-// 
+//
 //                     IntPtr jsObj = JSApi.JSh_GetJsvalObject(ref val);
 //                     if (jsObj == IntPtr.Zero)
 //                         return null;
-// 
+//
 //                     JSApi.JSh_GetUCProperty(JSMgr.cx, jsObj, "__nativeObj", -1, ref val);
 //                     IntPtr __nativeObj = JSApi.JSh_GetJsvalObject(ref val);
 //                     if (__nativeObj == IntPtr.Zero)
 //                         return null;
-// 
+//
 //                     object csObj = JSMgr.getCSObj(__nativeObj);
 //                     return csObj;
 //                 }
@@ -186,7 +186,7 @@ public class JSDataExchangeMgr
 //                 {
 //                     jsval val = new jsval();
 //                     JSApi.JSh_SetJsvalUndefined(ref val);
-// 
+//
 //                     IntPtr jsObj = JSApi.JSh_GetJsvalObject(ref vc.valTemp);
 //                     if (jsObj == IntPtr.Zero)
 //                         return null;
@@ -296,13 +296,13 @@ public class JSDataExchangeMgr
     /// <returns></returns>
 //     public bool shouldReturnBaseTypeObject(string typeName)
 //     {
-// 
+//
 //     }
 
     /// <summary>
     /// Sets the object.
     /// if e == UpdateRefARGV, currIndex must be set before this function
-    /// 
+    ///
     /// operation of this function:
     /// 1) if JavaScript already exists, return that JavaScript object.
     /// 2) else, create a new JavaScript object and return it.
@@ -364,7 +364,7 @@ public class JSDataExchangeMgr
                                     jsObjID = JSApi.createJSClassObject(baseTypeName);
                                     if (jsObjID != 0)
                                     {
-                                        Debug.LogWarning("WARNING: Return a \"" + typeName + "\" to JS failed. Return base type\"" + baseTypeName + "\" instead.");
+                                        //Debug.LogWarning("WARNING: Return a \"" + typeName + "\" to JS failed. Return base type\"" + baseTypeName + "\" instead.");
                                     }
                                 }
                             }
@@ -406,16 +406,16 @@ public class JSDataExchangeMgr
 //                             if (jstypeObj != IntPtr.Zero)
 //                             {
 //                                 jsObj = JSApi.JSh_NewObjectAsClass(JSMgr.cx, jstypeObj, "ctor", null /*JSMgr.mjsFinalizer*/);
-// 
+//
 //                                 // __nativeObj
 //                                 IntPtr __nativeObj = JSApi.JSh_NewMyClass(JSMgr.cx, JSMgr.mjsFinalizer);
 //                                 JSMgr.addJSCSRelation(jsObj, __nativeObj, csObj);
-// 
+//
 //                                 // jsObj.__nativeObj = __nativeObj
 //                                 jsval val = new jsval();
 //                                 JSApi.JSh_SetJsvalObject(ref val, __nativeObj);
 //                                 JSApi.JSh_SetUCProperty(JSMgr.cx, jsObj, "__nativeObj", -1, ref val);
-// 
+//
 //                                 JSApi.JSh_SetJsvalObject(ref vc.valReturn, jsObj);
 //                             }
 //                             else
@@ -424,7 +424,7 @@ public class JSDataExchangeMgr
 //                             }
 //                         }
 //                     }
-// 
+//
 //                     if (e == eSetType.Jsval)
 //                         vc.valTemp = vc.valReturn;
 //                     else if (e == eSetType.SetRval)
@@ -438,7 +438,7 @@ public class JSDataExchangeMgr
 //                     if (argvJSObj != IntPtr.Zero)
 //                     {
 //                         bool success = false;
-// 
+//
 //                         IntPtr jsObj = IntPtr.Zero;
 //                         Type csType = csObj.GetType();
 //                         if (csType.IsClass && (jsObj = JSMgr.getJSObj(csObj)) != IntPtr.Zero)
@@ -457,21 +457,21 @@ public class JSDataExchangeMgr
 //                             if (jstypeObj != IntPtr.Zero)
 //                             {
 //                                 // 1)
-//                                 // jsObj: prototype  
+//                                 // jsObj: prototype
 //                                 // __nativeObj: csObj + finalizer
-//                                 // 
+//                                 //
 //                                 jsObj = JSApi.JSh_NewObjectAsClass(JSMgr.cx, jstypeObj, "ctor", null /*JSMgr.mjsFinalizer*/);
 //                                 // __nativeObj
 //                                 IntPtr __nativeObj = JSApi.JSh_NewMyClass(JSMgr.cx, JSMgr.mjsFinalizer);
 //                                 JSMgr.addJSCSRelation(jsObj, __nativeObj, csObj);
-// 
+//
 //                                 //
 //                                 // 2)
 //                                 // jsObj.__nativeObj = __nativeObj
 //                                 //
 //                                 JSApi.JSh_SetJsvalObject(ref val, __nativeObj);
 //                                 JSApi.JSh_SetUCProperty(JSMgr.cx, jsObj, "__nativeObj", -1, ref val);
-// 
+//
 //                                 // 3)
 //                                 // argvObj.Value = jsObj
 //                                 //
@@ -484,7 +484,7 @@ public class JSDataExchangeMgr
 //                                 Debug.LogError("Return a \"" + JSNameMgr.GetTypeFullName(csObj.GetType()) + "\" to JS failed. Did you forget to export that class?");
 //                             }
 //                         }
-// 
+//
 //                         if (!success)
 //                         {
 //                             JSApi.JSh_SetJsvalUndefined(ref val);
@@ -501,12 +501,12 @@ public class JSDataExchangeMgr
 
     #endregion
 
-    
+
     // return true if don't generate default constructor
 //    public static bool DontGenDefaultConstructor(Type type)
 //    {
 //        bool bDontGenDefaultConstructor =
-//            // type.GetConstructors().Length == 0 && 
+//            // type.GetConstructors().Length == 0 &&
 //            type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Length > 0;
 //        return bDontGenDefaultConstructor;
 //    }
@@ -663,7 +663,7 @@ public class JSDataExchangeMgr
         return method;
     }
     //
-    // 
+    //
     //
     public static Type[] RecursivelyGetGenericParameters(Type type, List<Type> lst = null)
     {
@@ -764,7 +764,7 @@ public class JSDataExchange_Arr
     public string Get_GetParam(Type t)
     {
         elementType = t.GetElementType();
-        if (elementType.IsArray) { 
+        if (elementType.IsArray) {
             //...error
         }
         StringBuilder sb = new StringBuilder();
@@ -808,7 +808,7 @@ public class JSDataExchange_Arr
         sb.Replace("[[", "{");
         sb.Replace("]]", "}");
 
-        return sb.ToString(); 
+        return sb.ToString();
     }
 
     public string Get_GetJSReturn()
@@ -859,7 +859,7 @@ public class JSDataExchange_Arr
 /// <summary>
 /// CSRepresentedObject
 /// if we have a JavaScript Message, like this:
-/// var Message = 
+/// var Message =
 /// {
 ///     id: 4,
 ///     str: "hello, world"
@@ -892,7 +892,7 @@ public class CSRepresentedObject
 //         {
 //             return false;
 //         }
-// 
+//
 //         // If parameter cannot be cast to Point return false.
 //         CSRepresentedObject p = obj as CSRepresentedObject;
 //         if ((System.Object)p == null)
@@ -910,9 +910,9 @@ public class CSRepresentedObject
         this.bFunction = bFunction;
         JSMgr.addJSCSRel(jsObjID, this, true);
 
-        if (bFunction) 
+        if (bFunction)
             s_funCount++;
-        else 
+        else
             s_objCount++;
 
         // !
@@ -921,7 +921,7 @@ public class CSRepresentedObject
         // 此时我们继续创建另一个 CSRepresentedObject 对象
         // 那么 refCount 就会 > 1
 
-        //int refCount = 
+        //int refCount =
             JSApi.incRefCount(jsObjID);
         //Debug.Log(new StringBuilder().AppendFormat("+ CSRepresentedObject {0} Ref[{1}] Fun[{1}]", jsObjID, refCount, bFunction ? 1 : 0));
     }
@@ -944,7 +944,7 @@ public class CSRepresentedObject
                     s_funCount--;
                 else
                     s_objCount--;
-                        
+
                 // !
                 // 由于 refCount 可能 > 1，这里必须判断 refCount <= 0 才能 JSMgr.removeJSCSRel
 

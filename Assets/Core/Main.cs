@@ -5,6 +5,7 @@ using UnityEngine;
 public class Main : MonoBehaviour
 {
     private static Main Instance;
+    private bool bInitFinish;
 
     void Awake()
     {
@@ -65,10 +66,16 @@ public class Main : MonoBehaviour
         }
         SceneManagerEx.Instance.Init();
         JSManager.Instance.Init();
+        ProtocalManager.Instance.Init();
+        bInitFinish = true;
     }
 
     void Update()
     {
+        if (bInitFinish)
+        {
+            ProtocalManager.Instance.Update();
+        }
     }
 
     void OnDestroy()

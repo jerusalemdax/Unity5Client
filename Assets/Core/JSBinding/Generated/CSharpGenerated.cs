@@ -7,6 +7,7 @@ public class CSharpGenerated
         {
             Debug.LogError(999777454);
         }
+        ProtocalManagerGenerated.__Register();
         SceneManagerExGenerated.__Register();
         UIManagerGenerated.__Register();
         HttpManagerGenerated.__Register();
