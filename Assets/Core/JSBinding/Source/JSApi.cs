@@ -125,7 +125,7 @@ public class JSApi
      * ****************** Calling stack ******************
      */
 
-    public enum GetType
+    public new enum GetType
     {
         Arg = 0,
         ArgRef = 1,
