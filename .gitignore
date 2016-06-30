@@ -23,3 +23,4 @@ jsconfig.json
 CSharpGenerated.dll
 CSharpGenerated.dll.meta
 JavaScript/Generated
+JavaScript/Scripts/GeneratedFiles.js
