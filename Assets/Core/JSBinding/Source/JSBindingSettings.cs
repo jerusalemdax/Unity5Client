@@ -1,20 +1,22 @@
-﻿using UnityEngine;
-using System;
-using System.Reflection;
+﻿using System;
 using System.IO;
+using System.Reflection;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class JSBindingSettings
 {
-    public static Type[] enums = new Type[]
-    {
-        /*
-         * No need to export enum anymore
-         * Enum should be 'compilied' by SharpKit only
-         */
+    /// <summary>
+    /// 导出enums到Javascript，暂时没用
+    /// </summary>
+    public static Type[] enums = {
+
     };
 
-    public static Type[] classes = new Type[]
-    {
+    /// <summary>
+    /// 添加到这里的类将会导出到Javascript
+    /// </summary>
+    public static Type[] classes = {
         typeof(ProtocalManager),
         typeof(SceneManagerEx),
         typeof(UIManager),
@@ -22,8 +24,8 @@ public class JSBindingSettings
         typeof(MonoBehaviour),
         typeof(Behaviour),
         typeof(Component),
-        typeof(UnityEngine.Object),
-        typeof(Debug),
+        typeof(Object),
+        typeof(Debug)
     };
 
 
@@ -68,7 +70,7 @@ public class JSBindingSettings
             (type == typeof(WebCamTexture) && (memberName == "isReadable" || memberName == "MarkNonReadable")) ||
             (type == typeof(StreamReader) && (memberName == "CreateObjRef" || memberName == "GetLifetimeService" || memberName == "InitializeLifetimeService")) ||
             (type == typeof(StreamWriter) && (memberName == "CreateObjRef" || memberName == "GetLifetimeService" || memberName == "InitializeLifetimeService")) ||
-            (type == typeof(UnityEngine.Font) && memberName == "textureRebuildCallback")
+            (type == typeof(Font) && memberName == "textureRebuildCallback")
 #if UNITY_4_6 || UNITY_4_7
              || (type == typeof(UnityEngine.EventSystems.PointerEventData) && memberName == "lastPress")
              || (type == typeof(UnityEngine.UI.InputField) && memberName == "onValidateInput") // property delegate
@@ -136,15 +138,12 @@ public class JSBindingSettings
         {
             return type.GetConstructors().Length == 0;
         }
-        else
+        foreach (var c in type.GetConstructors())
         {
-            foreach (var c in type.GetConstructors())
-            {
-                if (c.GetParameters().Length == 0)
-                    return false;
-            }
-            return true;
+            if (c.GetParameters().Length == 0)
+                return false;
         }
+        return true;
     }
 
     // extension (including ".")
@@ -152,7 +151,7 @@ public class JSBindingSettings
     public static string jscExtension = ".bytes";
     // directory to save js files
 #if UNITY_EDITOR
-    public static string jsDir = Application.dataPath + "/../JavaScript";
+    public static string jsDir = Application.dataPath + "/../JavaScript/Scripts";
 #else
     public static string jsDir = PathManager.GetReadOnlyPath("JavaScript");
 #endif
@@ -164,7 +163,7 @@ public class JSBindingSettings
     // a file to save generated js file names
     public static string jsGeneratedFiles { get { return jsDir + "/GeneratedFiles" + jsExtension; } }
     //
-    public static string csGeneratedDir = Application.dataPath + "/Core/JSBinding/Generated";
+    public static string csGeneratedDir = Application.dataPath + "/../Javascript/Generated";
 	public static string sharpkitGeneratedFiles = jsDir + "/SharpKitGeneratedFiles.javascript";
     public static string monoBehaviour2JSComponentName = jsDir + "/MonoBehaviour2JSComponentName.javascript";
 
@@ -178,19 +177,17 @@ public class JSBindingSettings
      * All C# scripts - PathsNotToJavaScript + PathsToJavaScript = C# scripts to export to javascript
      * see JSAnalyzer.MakeJsTypeAttributeInSrc for more information
      */
-    public static string[] PathsNotToJavaScript = new string[]
-    {
+    public static string[] PathsNotToJavaScript = {
         "JSBinding/",
         //"Stealth/",
         "DaikonForge Tween (Pro)/",
         "NGUI/",
 		"Scripts/Framework/"
     };
-    public static string[] PathsToJavaScript = new string[]
-    {
+    public static string[] PathsToJavaScript = {
         "JSBinding/Samples/",
         "JSBinding/JSImp/", // !!
-        "DaikonForge Tween (Pro)/Examples/Scripts",
+        "DaikonForge Tween (Pro)/Examples/Scripts"
     };
     /// <summary>
     /// By default, menu
@@ -201,8 +198,7 @@ public class JSBindingSettings
     /// handles all Prefabs and Scenes in whole project
     /// add paths(directory or file name) to this array if you want to skip them
     /// </summary>
-    public static string[] PathsNotToCheckOrReplace = new string[]
-    {
+    public static string[] PathsNotToCheckOrReplace = {
         "JSBinding/",
         "JSBinding/Prefabs/_JSEngine.prefab",
         "Plugins/",
@@ -211,7 +207,7 @@ public class JSBindingSettings
         "StreamingAssets/",
         "UnityVS/",
         "DaikonForge Tween (Pro)/",
-        "NGUI/",
+        "NGUI/"
     };
 
 	/// <summary>
@@ -224,7 +220,7 @@ public class JSBindingSettings
 		PropertyInfo[] infos = null;
 		if (type == typeof(AnimationCurve))
 		{
-			infos = new PropertyInfo[]
+			infos = new[]
 			{
 				type.GetProperty("keys"),
 				type.GetProperty("postWrapMode"),
@@ -233,7 +229,7 @@ public class JSBindingSettings
 		}
 		else if (type == typeof(Keyframe))
 		{
-			infos = new PropertyInfo[]
+			infos = new[]
 			{
 				type.GetProperty("inTangent"),
 				type.GetProperty("outTangent"),

@@ -1,6 +1,7 @@
 *.sln
 *.csproj
 Temp
+Temp.meta
 Library
 .vs
 Build
@@ -19,3 +20,5 @@ logs
 .vscode
 typings
 jsconfig.json
+CSharpGenerated.dll
+CSharpGenerated.dll.meta

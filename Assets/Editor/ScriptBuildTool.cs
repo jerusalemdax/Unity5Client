@@ -13,16 +13,10 @@ public class ScriptBuildTool
     {
         List<CSProjectFile> csProjectList = new List<CSProjectFile>();
         List<string> scriptSrcList = new List<string>();
-        scriptSrcList.Add(@".\src\**\*.cs");
-        CSProjectFile scriptProj = new CSProjectFile("Scripts", "87044393-6696-4D07-3815-2463D890CDAE", "Scripts/Scripts.csproj", scriptSrcList.ToArray());
+        scriptSrcList.Add(@".\*.cs");
+        CSProjectFile scriptProj = new CSProjectFile("CSharpGenerated", "87044393-6696-4D07-3815-2463D890CDAE", "JavaScript/Generated/CSharpGenerated.csproj", scriptSrcList.ToArray());
         GenerateCSProject(scriptProj);
 
-// TODO Assembly-CSharp自己生成，不用依赖Unity
-//        List<string> engineSrcList = new List<string>();
-//        engineSrcList.Add(@"..\Assets\Core\**\*.cs");
-//        engineSrcList.Add(@"..\Assets\Extensions\**\*.cs");
-//        CSProjectFile engineProj = new CSProjectFile("Assembly-CSharp", "6AC29F59-D154-4BB0-86C5-1CFA1A3F2473", "Scripts/Source.CSharp.csproj", engineSrcList.ToArray());
-//        GenerateCSProject(engineProj);
         csProjectList.Add(scriptProj);
         GenerateScriptSlnFile(csProjectList.ToArray());
     }
@@ -30,7 +24,7 @@ public class ScriptBuildTool
     [MenuItem("Build/Build Script")]
     public static void BuildScript()
     {
-        if (!File.Exists("Scripts/Scripts.sln"))
+        if (!File.Exists("JavaScript/Generated/CSharpGenerated.sln"))
         {
             GenerateProjectFiles();
         }
@@ -40,7 +34,7 @@ public class ScriptBuildTool
             xbuild += ".bat";
         }
         string xbuildPath = PathCombine(GetFrameWorksFolder(), "MonoBleedingEdge", "bin", xbuild);
-        CommandLineTool.Command(xbuildPath, "Scripts/Scripts.sln /p:Configuration=Release");
+        CommandLineTool.Command(xbuildPath, "JavaScript/Generated/CSharpGenerated.sln /p:Configuration=Release");
     }
 
     public static void GenerateCSProject(CSProjectFile csproj)
@@ -83,8 +77,10 @@ public class ScriptBuildTool
         propertyGroup.AppendChild(projectTypeGuids);
         var targetFrameworkIdentifier = doc.CreateElement("TargetFrameworkIdentifier");
         targetFrameworkIdentifier.InnerText = ".NETFramework";
+        propertyGroup.AppendChild(targetFrameworkIdentifier);
         var targetFrameworkVersion = doc.CreateElement("TargetFrameworkVersion");
         targetFrameworkVersion.InnerText = "v3.5";
+        propertyGroup.AppendChild(targetFrameworkVersion);
         project.AppendChild(propertyGroup);
         project.AppendChild(GeneratePlatformPropertyGroup(doc, "Debug"));
         project.AppendChild(GeneratePlatformPropertyGroup(doc, "Release"));
@@ -103,8 +99,8 @@ public class ScriptBuildTool
         var target = doc.CreateElement("Target");
         target.SetAttribute("Name", "AfterBuild");
         var copy = doc.CreateElement("Copy");
-        copy.SetAttribute("SourceFiles", @"$(OutputPath)Scripts.dll");
-        copy.SetAttribute("DestinationFolder", @"..\StreamingAssets");
+        copy.SetAttribute("SourceFiles", @"$(OutputPath)CSharpGenerated.dll");
+        copy.SetAttribute("DestinationFolder", @"..\..\Assets\Plugins");
         copy.SetAttribute("ContinueOnError", "false");
         target.AppendChild(copy);
         project.AppendChild(target);
@@ -114,7 +110,7 @@ public class ScriptBuildTool
 
     public static void GenerateScriptSlnFile(CSProjectFile[] csProjects)
     {
-        FileStream fs = new FileStream("Scripts/Scripts.sln", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+        FileStream fs = new FileStream("JavaScript/Generated/CSharpGenerated.sln", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
 
         StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.ASCII);
 
@@ -135,7 +131,7 @@ public class ScriptBuildTool
            Environment.NewLine + "# Visual Studio 14" +
            Environment.NewLine + "VisualStudioVersion = 14.0.25123.0" +
            Environment.NewLine + "MinimumVisualStudioVersion = 10.0.40219.1" +
-           Environment.NewLine + "Project(" + "\"{" + CSProjectFile.CSProjectTypeGuid + "}\"" + ") = " + "\"Scripts\"" + ", " + "\"Scripts.csproj\"" + ", " + "\"{87044393-6696-4D07-3815-2463D890CDAE}\"" +
+           Environment.NewLine + "Project(" + "\"{" + CSProjectFile.CSProjectTypeGuid + "}\"" + ") = " + "\"CSharpGenerated\"" + ", " + "\"CSharpGenerated.csproj\"" + ", " + "\"{87044393-6696-4D07-3815-2463D890CDAE}\"" +
            Environment.NewLine + "EndProject" +
            Environment.NewLine + "Global" +
            Environment.NewLine + "\t" + "GlobalSection(SolutionConfigurationPlatforms) = preSolution" +
@@ -176,7 +172,7 @@ public class ScriptBuildTool
         warningLevel.InnerText = "4";
         propertyGroup.AppendChild(warningLevel);
         string defineStr =
-            "TRACE;UNITY_5_3_OR_NEWER;UNITY_5_3_4;UNITY_5_3;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE";
+            "TRACE";
         var defineConstants = doc.CreateElement("DefineConstants");
         defineConstants.InnerText = string.Format("{0};{1}", mode.ToUpper(), defineStr);
         propertyGroup.AppendChild(defineConstants);
@@ -198,8 +194,7 @@ public class ScriptBuildTool
         itemGroup.AppendChild(GenerateReference(doc, "UnityEngine", Path.Combine(GetManagedFolder(), "UnityEngine.dll")));
         itemGroup.AppendChild(GenerateReference(doc, "UnityEditor", Path.Combine(GetManagedFolder(), "UnityEditor.dll")));
         itemGroup.AppendChild(GenerateReference(doc, "UnityEngine.UI", Path.Combine(GetFrameWorksFolder(), @"UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll")));
-        itemGroup.AppendChild(GenerateReference(doc, "Assembly-CSharp", @"..\Library\ScriptAssemblies\Assembly-CSharp.dll"));
-        itemGroup.AppendChild(GenerateReference(doc, "LitJson", @"..\Assets\Plugins\LitJson.dll"));
+        itemGroup.AppendChild(GenerateReference(doc, "Assembly-CSharp", @"..\..\Library\ScriptAssemblies\Assembly-CSharp.dll"));
         return itemGroup;
     }
 
