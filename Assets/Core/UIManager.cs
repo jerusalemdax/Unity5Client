@@ -2,6 +2,7 @@
 using AssetBundles;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UIManager
 {
@@ -33,6 +34,13 @@ public class UIManager
         scaler.referenceResolution = new Vector2(960, 640);
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
         scaler.matchWidthOrHeight = 1.0f;
+        go.AddComponent<GraphicRaycaster>();
+
+        //添加事件管理
+        GameObject eventSystemGo = new GameObject("EventSystem");
+        eventSystemGo.AddComponent<EventSystem>();
+        eventSystemGo.AddComponent<StandaloneInputModule>();
+        eventSystemGo.transform.parent = go.transform;
     }
 
     public void ShowPanel(string panelName)
