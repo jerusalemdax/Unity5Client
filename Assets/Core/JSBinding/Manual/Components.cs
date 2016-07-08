@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public partial class UnityEngineManual
@@ -23,7 +22,7 @@ public partial class UnityEngineManual
             if (jsCom.jsClassName == typeString ||
                 JSCache.IsInheritanceRel(typeString, jsCom.jsClassName))
             {
-                id = jsCom.GetJSObjID(true);
+                id = jsCom.GetJsObjID(true);
                 break;
             }
         }
@@ -42,7 +41,7 @@ public partial class UnityEngineManual
         }
         for (int i = 0; i < lst.Count; i++)
         {
-            int jsObjID = lst[i].GetJSObjID(true);
+            int jsObjID = lst[i].GetJsObjID(true);
             JSApi.setObject((int)JSApi.SetType.SaveAndTempTrace, jsObjID);
             JSApi.moveSaveID2Arr(i);
         }
@@ -82,7 +81,7 @@ public partial class UnityEngineManual
         goFromComponent = ((UnityEngine.Component)vc.csObj).gameObject;
     }
 
-    /* 
+    /*
      * GameObject.AddComponent<T>()
      */
     public static bool GameObject_AddComponentT1(JSVCall vc, int count)
@@ -106,15 +105,15 @@ public partial class UnityEngineManual
             {
                 jsComponentType = JSDataExchangeMgr.GetTypeByName(jsComponentName, jsComponentType);
             }
-            
+
             JSComponent jsComp = (JSComponent)go.AddComponent(jsComponentType);
             jsComp.jsClassName = typeString;
-            jsComp.jsFail = false;
-            jsComp.init(true);
-            jsComp.callAwake(); // 要调用 js 的 Awake
+            jsComp.JsFail = false;
+            jsComp.Init(true);
+            jsComp.CallAwake(); // 要调用 js 的 Awake
 
             //JSApi.JSh_SetRvalObject(vc.cx, vc.vp, jsComp.jsObj);
-            JSApi.setObject((int)JSApi.SetType.Rval, jsComp.GetJSObjID(false));
+            JSApi.setObject((int)JSApi.SetType.Rval, jsComp.GetJsObjID(false));
         }
         return true;
     }

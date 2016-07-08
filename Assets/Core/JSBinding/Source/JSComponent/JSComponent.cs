@@ -1,13 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Runtime.InteropServices;
-using System.Reflection;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.Security;
-
-using jsval = JSApi.jsval;
 
 /// <summary>
 /// JSComponent
@@ -18,119 +10,63 @@ public class JSComponent : JSSerializer
 {
     [HideInInspector]
     [NonSerialized]
-    protected int jsObjID = 0;
+    protected int JsObjID;
 
-    int idAwake = 0;
-    int idStart = 0;
-    int idOnDestroy = 0;
+    private int _idAwake;
+    private int _idStart;
+    private int _idOnDestroy;
 
-//     int idFixedUpdate = 0;
-//     int idUpdate = 0;
-//     int idLateUpdate = 0;
-//     int idOnGUI = 0;
-//     int idOnEnable = 0;
-//     int idOnTriggerEnter2D = 0;
-//     int idOnTriggerStay = 0;
-//     int idOnTriggerExit = 0;
-//     int idOnAnimatorMove = 0;
-//     int idOnAnimatorIK = 0;
-
-    //
-    // 2D Platformer 
-    //
-//     int idDestroyChildGameObject = 0;
-//     int idDisableChildGameObject = 0;
-//     int idDestroyGameObject = 0;
-    int idStartSinking = 0;
-    int idRestartLevel = 0;
     /// <summary>
     /// Initializes the member function.
     /// </summary>
-    protected virtual void initMemberFunction()
+    protected virtual void InitMemberFunction()
     {
-        idAwake = JSApi.getObjFunction(jsObjID, "Awake");
-        idStart = JSApi.getObjFunction(jsObjID, "Start");
-        idOnDestroy = JSApi.getObjFunction(jsObjID, "OnDestroy");
-
-//         idFixedUpdate = JSApi.getObjFunction(jsObjID, "FixedUpdate");
-//         idUpdate = JSApi.getObjFunction(jsObjID, "Update");
-//         idLateUpdate = JSApi.getObjFunction(jsObjID, "LateUpdate");
-//         idOnGUI = JSApi.getObjFunction(jsObjID, "OnGUI");
-//         idOnEnable = JSApi.getObjFunction(jsObjID, "OnEnable");
-//         idOnTriggerEnter2D = JSApi.getObjFunction(jsObjID, "OnTriggerEnter2D");
-//         idOnTriggerStay = JSApi.getObjFunction(jsObjID, "OnTriggerStay");
-//         idOnTriggerExit = JSApi.getObjFunction(jsObjID, "OnTriggerExit");
-//         idOnAnimatorMove = JSApi.getObjFunction(jsObjID, "OnAnimatorMove");
-//         idOnAnimatorIK = JSApi.getObjFunction(jsObjID, "OnAnimatorIK");
-
-//         idDestroyChildGameObject = JSApi.getObjFunction(jsObjID, "DestroyChildGameObject");
-//         idDisableChildGameObject = JSApi.getObjFunction(jsObjID, "DisableChildGameObject");
-//         idDestroyGameObject = JSApi.getObjFunction(jsObjID, "DestroyGameObject");
-        idStartSinking = JSApi.getObjFunction(jsObjID, "StartSinking");
-        idRestartLevel = JSApi.getObjFunction(jsObjID, "RestartLevel");
+        _idAwake = JSApi.getObjFunction(JsObjID, "Awake");
+        _idStart = JSApi.getObjFunction(JsObjID, "Start");
+        _idOnDestroy = JSApi.getObjFunction(JsObjID, "OnDestroy");
     }
-    /// <summary>
-    /// Removes if exist.
-    /// </summary>
-    /// <param name="id">The identifier.</param>
-    void removeIfExist(int id)
+
+    private int _jsState;
+
+    private bool JsSuccess
     {
-        if (id != 0)
+        get
         {
-            JSApi.removeByID(id);
+            return _jsState == 1;
+        }
+        set
+        {
+            if (value) _jsState = 1;
         }
     }
-    void removeMemberFunction()
+
+    public bool JsFail
     {
-        // ATTENSION
-        // same script have same idAwake idStart ... values
-        // if these lines are executed in OnDestroy (for example  for gameObject A)
-        // other gameObjects (for example B) with the same script
-        // will also miss these functions
-        // 
-        // and if another C (with the same script) is born later   
-        // it will re-get these values  but they are new values 
-        // 
-        // 
-        // but if they are not removed in OnDestroy 
-        // C valueMap may grow to a very big size
-        //
-//         removeIfExist(idAwake);
-//         removeIfExist(idStart);
-//         removeIfExist(idFixedUpdate);
-//         removeIfExist(idUpdate);
-//         removeIfExist(idOnDestroy);
-//         removeIfExist(idOnGUI);
-//         removeIfExist(idOnEnable);
-//         removeIfExist(idOnTriggerEnter2D);
-//         removeIfExist(idOnTriggerStay);
-//         removeIfExist(idOnTriggerExit);
-//         removeIfExist(idOnAnimatorMove);
-//         removeIfExist(idOnAnimatorIK);
-//         removeIfExist(idDestroyChildGameObject);
-//         removeIfExist(idDisableChildGameObject);
-//         removeIfExist(idDestroyGameObject);
+        private get
+        {
+            return _jsState == 2;
+        }
+        set
+        {
+            _jsState = value ? 2 : 0;
+        }
     }
 
-    int jsState = 0;
-    bool jsSuccess { get { return jsState == 1; } set { if (value) jsState = 1; } }
-    public bool jsFail { get { return jsState == 2; } set { if (value) jsState = 2; else jsState = 0; } }
-
-    protected void callIfExist(int funID, params object[] args)
+    protected void CallIfExist(int funID, params object[] args)
     {
         if (funID > 0)
         {
-            JSMgr.vCall.CallJSFunctionValue(jsObjID, funID, args);
+            JSMgr.vCall.CallJSFunctionValue(JsObjID, funID, args);
         }
     }
 
-    public void initJS()
+    private void InitJs()
     {
-        if (jsFail || jsSuccess) return;
+        if (JsFail || JsSuccess) return;
 
         if (string.IsNullOrEmpty(jsClassName))
         {
-            jsFail = true;
+            JsFail = true;
             return;
         }
 
@@ -138,17 +74,17 @@ public class JSComponent : JSSerializer
         // cannot use createJSClassObject here
         // because we have to call ctor, to run initialization code
         // this object will not have finalizeOp
-        jsObjID = JSApi.newJSClassObject(this.jsClassName);
-        JSApi.setTraceS(jsObjID, true);
-        if (jsObjID == 0)
+        JsObjID = JSApi.newJSClassObject(jsClassName);
+        JSApi.setTraceS(JsObjID, true);
+        if (JsObjID == 0)
         {
-            Debug.LogError("New MonoBehaviour \"" + this.jsClassName + "\" failed. Did you forget to export that class?");
-            jsFail = true;
+            Debug.LogError("New MonoBehaviour \"" + jsClassName + "\" failed. Did you forget to export that class?");
+            JsFail = true;
             return;
-        } 
-        JSMgr.addJSCSRel(jsObjID, this);
-        initMemberFunction();
-        jsSuccess = true;
+        }
+        JSMgr.addJSCSRel(JsObjID, this);
+        InitMemberFunction();
+        JsSuccess = true;
     }
 
     //
@@ -169,8 +105,8 @@ public class JSComponent : JSSerializer
     //
     //
     // 总结：以上那么多分类，做的事情其实就是，当一个类X要在Awake时去获取Y类组件，甚至访问Y类成员，如果此时Y类的Awake还没有调用，此时会得到undefined，那么我们只好先初始化一下Y类的JS对象。
-    // 
-    public void init(bool callSerialize)
+    //
+    public void Init(bool callSerialize)
     {
         if (!JSEngine.initSuccess && !JSEngine.initFail)
         {
@@ -181,11 +117,11 @@ public class JSComponent : JSSerializer
             return;
         }
 
-        initJS();
+        InitJs();
 
-        if (jsSuccess && callSerialize && !DataSerialized)
+        if (JsSuccess && callSerialize && !DataSerialized)
         {
-            initSerializedData(jsObjID);
+            initSerializedData(JsObjID);
         }
     }
 
@@ -194,28 +130,27 @@ public class JSComponent : JSSerializer
 		if (DataSerialized)
 			return;
 		base.initSerializedData(jsObjID);
-		
-		// init child
-		for (int i = 0; waitSerialize != null && i < waitSerialize.Count; i++)
+
+		for (var i = 0; waitSerialize != null && i < waitSerialize.Count; i++)
 		{
-			waitSerialize[i].initSerializedData(waitSerialize[i].jsObjID);
+			waitSerialize[i].initSerializedData(waitSerialize[i].JsObjID);
 		}
 		waitSerialize = null;
 	}
 
 
 
-    public void callAwake()
+    public void CallAwake()
     {
-        if (jsSuccess)
+        if (JsSuccess)
         {
-            callIfExist(idAwake);
+            CallIfExist(_idAwake);
         }
     }
     void Awake()
     {
-        init(true);
-        callAwake();
+        Init(true);
+        CallAwake();
     }
     /// <summary>
     /// get javascript object id of this JSComponent.
@@ -223,32 +158,31 @@ public class JSComponent : JSSerializer
     /// in this case, we call initJS() for this JSComponent immediately.
     /// </summary>
     /// <returns></returns>
-    /// 
-    public int GetJSObjID(bool callSerialize)
+    ///
+    public int GetJsObjID(bool callSerialize)
     {
-        if (jsObjID == 0)
+        if (JsObjID == 0)
         {
-            init(callSerialize);
+            Init(callSerialize);
         }
-        return jsObjID;
+        return JsObjID;
     }
 
-    void Start() 
+    void Start()
     {
-        callIfExist(idStart);
+        CallIfExist(_idStart);
     }
 
     void OnDestroy()
     {
         if (!JSMgr.IsShutDown)
         {
-            callIfExist(idOnDestroy);
+            CallIfExist(_idOnDestroy);
         }
 
-        if (jsSuccess)
+        if (JsSuccess)
         {
-            // remove this jsObjID even if JSMgr.isShutDown is true
-            JSMgr.removeJSCSRel(jsObjID);
+            JSMgr.removeJSCSRel(JsObjID);
         }
 
         if (JSMgr.IsShutDown)
@@ -256,89 +190,10 @@ public class JSComponent : JSSerializer
             return;
         }
 
-        if (jsSuccess)
+        if (JsSuccess)
         {
-            // JSMgr.RemoveRootedObject(jsObj);
-            JSApi.setTraceS(jsObjID, false);
-            // JSMgr.removeJSCSRel(jsObjID); // Move upwards
-
-            //
-            // jsObj doesn't have finalize
-            // we must remove it here
-            // having a finalize is another approach
-            //
-            JSApi.removeByID(jsObjID);
-            removeMemberFunction();
+            JSApi.setTraceS(JsObjID, false);
+            JSApi.removeByID(JsObjID);
         }
-    }
-
-//     void FixedUpdate()
-//     {
-//         callIfExist(idFixedUpdate);
-//     }
-//     void Update()
-//     {
-//         callIfExist(idUpdate);
-//     }
-//     void LateUpdate()
-//     {
-//         callIfExist(idLateUpdate);
-//     }
-// 
-//     void OnEnable()
-//     {
-//         callIfExist(idOnEnable);
-//     }
-//     void OnGUI()
-//     {
-//         callIfExist(idOnGUI);
-//     }
-// 
-//     void OnTriggerEnter2D (Collider2D other)
-//     {
-//         callIfExist(idOnTriggerEnter2D, other);
-//     }
-//     void OnTriggerStay(Collider other)
-//     {
-//         callIfExist(idOnTriggerStay, other);
-//     }
-//     void OnTriggerExit(Collider other)
-//     {
-//         callIfExist(idOnTriggerExit, other);
-//     }
-//     void OnAnimatorMove()
-//     {
-//         callIfExist(idOnAnimatorMove);
-//     }
-//     void OnAnimatorIK(int layerIndex)
-//     {
-//         callIfExist(idOnAnimatorIK);
-//     }
-// 
-    //
-    // 2DPlatformer
-    //
-
-//     void DestroyChildGameObject()
-//     {
-//         callIfExist(idDestroyChildGameObject);
-//     }
-// 
-//     void DisableChildGameObject()
-//     {
-//         callIfExist(idDisableChildGameObject);
-//     }
-// 
-//     void DestroyGameObject()
-//     {
-//         callIfExist(idDestroyGameObject);
-//     }
-    void StartSinking()
-    {
-        callIfExist(idStartSinking);
-    }
-    void RestartLevel()
-    {
-        callIfExist(idRestartLevel);
     }
 }

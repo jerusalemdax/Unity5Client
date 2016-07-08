@@ -1,31 +1,28 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.EventSystems;
 
 /**
  * 如果脚本继承了以下几种接口，则统一用这个替换
  * 这个只支持 Awake Start Update LateUpdate
- * 
+ *
  */
 
-public class JSComponent_EventTrigger : JSComponent, 
-    IEventSystemHandler, 
-    IPointerEnterHandler, 
-    IPointerExitHandler, 
-    IPointerDownHandler, 
-    IPointerUpHandler, 
-    IPointerClickHandler, 
-    IBeginDragHandler, 
-    IInitializePotentialDragHandler, 
-    IDragHandler, 
-    IEndDragHandler, 
-    IDropHandler, 
-    IScrollHandler, 
-    IUpdateSelectedHandler, 
-    ISelectHandler, 
-    IDeselectHandler, 
-    IMoveHandler, 
+public class JSComponent_EventTrigger : JSComponent,
+    IEventSystemHandler,
+    IPointerEnterHandler,
+    IPointerExitHandler,
+    IPointerDownHandler,
+    IPointerUpHandler,
+    IPointerClickHandler,
+    IBeginDragHandler,
+    IInitializePotentialDragHandler,
+    IDragHandler,
+    IEndDragHandler,
+    IDropHandler,
+    IScrollHandler,
+    IUpdateSelectedHandler,
+    ISelectHandler,
+    IDeselectHandler,
+    IMoveHandler,
     ISubmitHandler,
     ICancelHandler
 {
@@ -50,104 +47,104 @@ public class JSComponent_EventTrigger : JSComponent,
     int idOnSubmit;
     int idOnUpdateSelected;
 
-    protected override void initMemberFunction()
+    protected override void InitMemberFunction()
     {
-        base.initMemberFunction();
-        idUpdate = JSApi.getObjFunction(jsObjID, "Update");
-        idLateUpdate = JSApi.getObjFunction(jsObjID, "LateUpdate");
+        base.InitMemberFunction();
+        idUpdate = JSApi.getObjFunction(JsObjID, "Update");
+        idLateUpdate = JSApi.getObjFunction(JsObjID, "LateUpdate");
 
-        idOnBeginDrag = JSApi.getObjFunction(jsObjID, "OnBeginDrag");
-        idOnCancel = JSApi.getObjFunction(jsObjID, "OnCancel");
-        idOnDeselect = JSApi.getObjFunction(jsObjID, "OnDeselect");
-        idOnDrag = JSApi.getObjFunction(jsObjID, "OnDrag");
-        idOnDrop = JSApi.getObjFunction(jsObjID, "OnDrop");
-        idOnEndDrag = JSApi.getObjFunction(jsObjID, "OnEndDrag");
-        idOnInitializePotentialDrag = JSApi.getObjFunction(jsObjID, "OnInitializePotentialDrag");
-        idOnMove = JSApi.getObjFunction(jsObjID, "OnMove");
-        idOnPointerClick = JSApi.getObjFunction(jsObjID, "OnPointerClick");
-        idOnPointerDown = JSApi.getObjFunction(jsObjID, "OnPointerDown");
-        idOnPointerEnter = JSApi.getObjFunction(jsObjID, "OnPointerEnter");
-        idOnPointerExit = JSApi.getObjFunction(jsObjID, "OnPointerExit");
-        idOnPointerUp = JSApi.getObjFunction(jsObjID, "OnPointerUp");
-        idOnScroll = JSApi.getObjFunction(jsObjID, "OnScroll");
-        idOnSelect = JSApi.getObjFunction(jsObjID, "OnSelect");
-        idOnSubmit = JSApi.getObjFunction(jsObjID, "OnSubmit");
-        idOnUpdateSelected = JSApi.getObjFunction(jsObjID, "OnUpdateSelected");
+        idOnBeginDrag = JSApi.getObjFunction(JsObjID, "OnBeginDrag");
+        idOnCancel = JSApi.getObjFunction(JsObjID, "OnCancel");
+        idOnDeselect = JSApi.getObjFunction(JsObjID, "OnDeselect");
+        idOnDrag = JSApi.getObjFunction(JsObjID, "OnDrag");
+        idOnDrop = JSApi.getObjFunction(JsObjID, "OnDrop");
+        idOnEndDrag = JSApi.getObjFunction(JsObjID, "OnEndDrag");
+        idOnInitializePotentialDrag = JSApi.getObjFunction(JsObjID, "OnInitializePotentialDrag");
+        idOnMove = JSApi.getObjFunction(JsObjID, "OnMove");
+        idOnPointerClick = JSApi.getObjFunction(JsObjID, "OnPointerClick");
+        idOnPointerDown = JSApi.getObjFunction(JsObjID, "OnPointerDown");
+        idOnPointerEnter = JSApi.getObjFunction(JsObjID, "OnPointerEnter");
+        idOnPointerExit = JSApi.getObjFunction(JsObjID, "OnPointerExit");
+        idOnPointerUp = JSApi.getObjFunction(JsObjID, "OnPointerUp");
+        idOnScroll = JSApi.getObjFunction(JsObjID, "OnScroll");
+        idOnSelect = JSApi.getObjFunction(JsObjID, "OnSelect");
+        idOnSubmit = JSApi.getObjFunction(JsObjID, "OnSubmit");
+        idOnUpdateSelected = JSApi.getObjFunction(JsObjID, "OnUpdateSelected");
     }
     void Update()
     {
-        callIfExist(idUpdate);
+        CallIfExist(idUpdate);
     }
     void LateUpdate()
     {
-        callIfExist(idLateUpdate);
+        CallIfExist(idLateUpdate);
     }
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-		callIfExist(idOnBeginDrag, eventData);
+		CallIfExist(idOnBeginDrag, eventData);
     }
     public virtual void OnCancel(BaseEventData eventData)
     {
-		callIfExist(idOnCancel, eventData);
+		CallIfExist(idOnCancel, eventData);
     }
     public virtual void OnDeselect(BaseEventData eventData)
     {
-		callIfExist(idOnDeselect, eventData);
+		CallIfExist(idOnDeselect, eventData);
     }
     public virtual void OnDrag(PointerEventData eventData)
     {
-		callIfExist(idOnDrag, eventData);
+		CallIfExist(idOnDrag, eventData);
     }
     public virtual void OnDrop(PointerEventData eventData)
     {
-		callIfExist(idOnDrop, eventData);
+		CallIfExist(idOnDrop, eventData);
     }
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-		callIfExist(idOnEndDrag, eventData);
+		CallIfExist(idOnEndDrag, eventData);
     }
     public virtual void OnInitializePotentialDrag(PointerEventData eventData)
     {
-		callIfExist(idOnInitializePotentialDrag, eventData);
+		CallIfExist(idOnInitializePotentialDrag, eventData);
     }
     public virtual void OnMove(AxisEventData eventData)
     {
-		callIfExist(idOnMove, eventData);
+		CallIfExist(idOnMove, eventData);
     }
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-		callIfExist(idOnPointerClick, eventData);
+		CallIfExist(idOnPointerClick, eventData);
     }
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-		callIfExist(idOnPointerDown, eventData);
+		CallIfExist(idOnPointerDown, eventData);
     }
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-		callIfExist(idOnPointerEnter, eventData);
+		CallIfExist(idOnPointerEnter, eventData);
     }
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-		callIfExist(idOnPointerExit, eventData);
+		CallIfExist(idOnPointerExit, eventData);
     }
     public virtual void OnPointerUp(PointerEventData eventData)
     {
-        callIfExist(idOnPointerUp, eventData);
+        CallIfExist(idOnPointerUp, eventData);
     }
     public virtual void OnScroll(PointerEventData eventData)
     {
-		callIfExist(idOnScroll, eventData);
+		CallIfExist(idOnScroll, eventData);
     }
     public virtual void OnSelect(BaseEventData eventData)
     {
-		callIfExist(idOnSelect, eventData);
+		CallIfExist(idOnSelect, eventData);
     }
     public virtual void OnSubmit(BaseEventData eventData)
     {
-		callIfExist(idOnSubmit, eventData);
+		CallIfExist(idOnSubmit, eventData);
     }
     public virtual void OnUpdateSelected(BaseEventData eventData)
     {
-		callIfExist(idOnUpdateSelected, eventData);
+		CallIfExist(idOnUpdateSelected, eventData);
     }
 }

@@ -152,7 +152,7 @@ public class JSSerializer : MonoBehaviour
             if (com.jsClassName == scriptName)
             {
 				component = com;
-                return com.GetJSObjID(false);
+                return com.GetJsObjID(false);
             }
         }
         return 0;
@@ -178,7 +178,7 @@ public class JSSerializer : MonoBehaviour
         public List<SerializeStruct> lstChildren;
         public void AddChild(SerializeStruct ss)
         {
-            if (lstChildren == null) 
+            if (lstChildren == null)
                 lstChildren = new List<SerializeStruct>();
             lstChildren.Add(ss);
         }
@@ -222,7 +222,7 @@ public class JSSerializer : MonoBehaviour
                         // 当数组元素个数为0时，lstChildren是null
                         int Count = (lstChildren == null ? 0 : lstChildren.Count);
 						// Can not combine these 2 loops
-						// moveID2Arr can be called inside calcID 
+						// moveID2Arr can be called inside calcID
                         for (var i = 0; i < Count; i++)
                         {
                             lstChildren[i].calcID();
@@ -405,7 +405,7 @@ public class JSSerializer : MonoBehaviour
 	{
 		if (dataSerialized)
 			return;
-		
+
 		dataSerialized = true;
 
         if (arrString == null || arrString.Length == 0)
