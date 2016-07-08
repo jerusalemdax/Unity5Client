@@ -175,6 +175,7 @@ public class JSComponent : JSSerializer
 #endif
         Init(true);
         CallIfExist(_idStart);
+        yield return null;
     }
 
     void OnDestroy()
