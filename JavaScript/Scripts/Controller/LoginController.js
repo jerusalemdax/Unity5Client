@@ -8,6 +8,10 @@ var LoginController = {
 		OnDestroy: function(){
 			print("LoginController OnDestroy");
 			UIManager.get_Instance().ClosePanel("LoginPanel");
+		},
+		EnterGame: function(){
+			print("Enter Game")
+			SceneManagerEx.get_Instance().ShowScene("Map2D");
 		}
     }
 };

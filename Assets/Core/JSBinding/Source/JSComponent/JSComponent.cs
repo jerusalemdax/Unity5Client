@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -12,6 +13,8 @@ public class JSComponent : JSSerializer
     [NonSerialized]
     protected int JsObjID;
 
+    private Dictionary<string, int> _classDic = new Dictionary<string, int>();
+    private Dictionary<int, Dictionary<string, int>> _funcDic = new Dictionary<int, Dictionary<string, int>>();
     private int _idAwake;
     private int _idStart;
     private int _idOnDestroy;
@@ -54,9 +57,18 @@ public class JSComponent : JSSerializer
 
     protected void CallIfExist(int funID, params object[] args)
     {
+        CallIfExist(JsObjID, funID, args);
+    }
+
+    protected void CallIfExist(int objID, int funID, params object[] args)
+    {
         if (funID > 0)
         {
-            JSMgr.vCall.CallJSFunctionValue(JsObjID, funID, args);
+            JSMgr.vCall.CallJSFunctionValue(objID, funID, args);
+        }
+        else
+        {
+            Debug.LogWarning("Not find function: " + funID);
         }
     }
 
@@ -142,7 +154,7 @@ public class JSComponent : JSSerializer
 
     public void CallAwake()
     {
-        if (JsSuccess)
+        if (JsSuccess && _idAwake > 0)
         {
             CallIfExist(_idAwake);
         }
@@ -195,5 +207,46 @@ public class JSComponent : JSSerializer
             JSApi.setTraceS(JsObjID, false);
             JSApi.removeByID(JsObjID);
         }
+    }
+
+    public void Call(string function)
+    {
+        string[] strs = function.Split('.');
+        string className = strs[0];
+        string func  = strs[1];
+        int objID;
+
+        if (!_classDic.ContainsKey(className))
+        {
+            objID = JSApi.newJSClassObject(className);
+            if (objID == 0)
+            {
+                Debug.LogError("New MonoBehaviour \"" + className + "\" failed. Did you forget to export that class?");
+                return;
+            }
+            _classDic.Add(className, objID);
+            _funcDic.Add(objID, new Dictionary<string, int>());
+        }
+        else
+        {
+            objID = _classDic[className];
+        }
+
+        int funcID;
+        if (!_funcDic[objID].ContainsKey(func))
+        {
+            funcID = JSApi.getObjFunction(objID, func);
+            if (funcID <= 0)
+            {
+                Debug.LogError("Not find function " + className + "." + func);
+                return;
+            }
+            _funcDic[objID].Add(func, funcID);
+        }
+        else
+        {
+            funcID = _funcDic[objID][func];
+        }
+        CallIfExist(objID, funcID);
     }
 }
