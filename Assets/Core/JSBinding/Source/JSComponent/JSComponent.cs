@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,6 @@ public class JSComponent : JSSerializer
 
     private Dictionary<string, int> _classDic = new Dictionary<string, int>();
     private Dictionary<int, Dictionary<string, int>> _funcDic = new Dictionary<int, Dictionary<string, int>>();
-    private int _idAwake;
     private int _idStart;
     private int _idOnDestroy;
 
@@ -24,7 +24,6 @@ public class JSComponent : JSSerializer
     /// </summary>
     protected virtual void InitMemberFunction()
     {
-        _idAwake = JSApi.getObjFunction(JsObjID, "Awake");
         _idStart = JSApi.getObjFunction(JsObjID, "Start");
         _idOnDestroy = JSApi.getObjFunction(JsObjID, "OnDestroy");
     }
@@ -150,20 +149,6 @@ public class JSComponent : JSSerializer
 		waitSerialize = null;
 	}
 
-
-
-    public void CallAwake()
-    {
-        if (JsSuccess && _idAwake > 0)
-        {
-            CallIfExist(_idAwake);
-        }
-    }
-    void Awake()
-    {
-        Init(true);
-        CallAwake();
-    }
     /// <summary>
     /// get javascript object id of this JSComponent.
     /// jsObjID may == 0 when this function is called, because other scripts refer to this JSComponent.
@@ -180,8 +165,15 @@ public class JSComponent : JSSerializer
         return JsObjID;
     }
 
-    void Start()
+    IEnumerator Start()
     {
+#if UNITY_EDITOR
+        while (JSEngine.initSuccess == false)
+        {
+            yield return null;
+        }
+#endif
+        Init(true);
         CallIfExist(_idStart);
     }
 
