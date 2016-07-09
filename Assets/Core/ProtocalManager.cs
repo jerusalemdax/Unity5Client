@@ -10,6 +10,7 @@ public class ProtocalManager{
 
     private PomeloClient _pclient;
     private Queue<KeyValuePair<Action<JsonObject>, JsonObject>> _callbacks = new Queue<KeyValuePair<Action<JsonObject>, JsonObject>>();
+    private NetWorkState _networkState;
 
     public static ProtocalManager Instance
     {
@@ -33,6 +34,7 @@ public class ProtocalManager{
         _pclient.NetWorkStateChangedEvent += (state) =>
         {
             Debug.Log("Network state changed: " + state);
+            _networkState = state;
             //TODO 网络状态变化的时候做一些操作
         };
 
@@ -57,10 +59,19 @@ public class ProtocalManager{
 
     public void Request(string route, JsonObject msg, Action<JsonObject> action)
     {
-        msg = new JsonObject();
-        _pclient.request(route, msg, (data) => {
-            Debug.Log(string.Format("route {0} receive message: {1}", route, data));
+        if (_networkState == NetWorkState.CONNECTED)
+        {
+            msg = new JsonObject();
+            _pclient.request(route, msg, (data) =>
+            {
+                Debug.Log(string.Format("route {0} receive message: {1}", route, data));
+                _callbacks.Enqueue(new KeyValuePair<Action<JsonObject>, JsonObject>(action, data));
+            });
+        }
+        else
+        {
+            var data = new JsonObject {{"code", "600"}};
             _callbacks.Enqueue(new KeyValuePair<Action<JsonObject>, JsonObject>(action, data));
-        });
+        }
     }
 }
