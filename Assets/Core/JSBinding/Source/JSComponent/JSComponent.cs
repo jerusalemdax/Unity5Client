@@ -167,12 +167,14 @@ public class JSComponent : JSSerializer
 
     IEnumerator Start()
     {
-#if UNITY_EDITOR
-        while (JSEngine.initSuccess == false)
+        if (Application.isEditor)
         {
-            yield return null;
+            while (JSEngine.initSuccess == false)
+            {
+                yield return null;
+            }
         }
-#endif
+
         Init(true);
         CallIfExist(_idStart);
         yield return null;
