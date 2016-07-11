@@ -35,6 +35,7 @@ public class ScriptBuildTool
         }
         string xbuildPath = PathCombine(GetFrameWorksFolder(), "MonoBleedingEdge", "bin", xbuild);
         CommandLineTool.Command(xbuildPath, "JavaScript/Generated/CSharpGenerated.sln /p:Configuration=Release");
+        AssetDatabase.Refresh();
     }
 
     public static void GenerateCSProject(CSProjectFile csproj)

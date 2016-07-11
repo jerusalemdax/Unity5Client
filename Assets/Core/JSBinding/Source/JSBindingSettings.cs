@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 
 public class JSBindingSettings
@@ -25,7 +27,17 @@ public class JSBindingSettings
         typeof(Behaviour),
         typeof(Component),
         typeof(Object),
-        typeof(Debug)
+        typeof(Debug),
+        typeof(GameObject),
+        typeof(Text),
+        typeof(MaskableGraphic),
+        typeof(Graphic),
+        typeof(UIBehaviour),
+        typeof(ICanvasElement),
+        typeof(IMaskable),
+        typeof(IClippable),
+        typeof(IMaterialModifier),
+        typeof(ILayoutElement)
     };
 
 

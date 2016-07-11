@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using AssetBundles;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
 
 public class UIManager
 {
@@ -43,11 +45,11 @@ public class UIManager
         eventSystemGo.transform.parent = go.transform;
     }
 
-    public void ShowPanel(string panelName)
+    public void ShowPanel(string panelName, Action loadCallback = null)
     {
         Debug.Log("ShowPanel: " + panelName);
 
-        Main.StartCoroutineFunc(LoadPrefabs(panelName));
+        Main.StartCoroutineFunc(LoadPrefabs(panelName, loadCallback));
     }
 
     public void ClosePanel(string panelName)
@@ -55,7 +57,7 @@ public class UIManager
         Object.Destroy(GameObject.Find("UIManager/" + panelName));
     }
 
-    IEnumerator LoadPrefabs(string panelName)
+    IEnumerator LoadPrefabs(string panelName, Action loadCallback = null)
     {
         string assetBundleName = "UI/" + panelName + ".prefab.unity3d";
         var request = AssetBundleManager.LoadAssetAsync(assetBundleName.ToLower(), panelName, typeof(GameObject));
@@ -72,5 +74,9 @@ public class UIManager
             obj.transform.SetParent(GameObject.Find("UIManager").transform, false);
         }
 
+        if (loadCallback != null)
+        {
+            loadCallback();
+        }
     }
 }

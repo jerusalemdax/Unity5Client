@@ -9,7 +9,7 @@ public class ProtocalManager{
     private static ProtocalManager _instance;
 
     private PomeloClient _pclient;
-    private Queue<KeyValuePair<Action<JsonObject>, JsonObject>> _callbacks = new Queue<KeyValuePair<Action<JsonObject>, JsonObject>>();
+    private Queue<KeyValuePair<Action<string>, string>> _callbacks = new Queue<KeyValuePair<Action<string>, string>>();
     private NetWorkState _networkState;
 
     public static ProtocalManager Instance
@@ -57,7 +57,7 @@ public class ProtocalManager{
         }
     }
 
-    public void Request(string route, JsonObject msg, Action<JsonObject> action)
+    public void Request(string route, JsonObject msg, Action<string> action)
     {
         if (_networkState == NetWorkState.CONNECTED)
         {
@@ -65,13 +65,13 @@ public class ProtocalManager{
             _pclient.request(route, msg, (data) =>
             {
                 Debug.Log(string.Format("route {0} receive message: {1}", route, data));
-                _callbacks.Enqueue(new KeyValuePair<Action<JsonObject>, JsonObject>(action, data));
+                _callbacks.Enqueue(new KeyValuePair<Action<string>, string>(action, data.ToString()));
             });
         }
         else
         {
-            var data = new JsonObject {{"code", "600"}};
-            _callbacks.Enqueue(new KeyValuePair<Action<JsonObject>, JsonObject>(action, data));
+            var data = new JsonObject {{"code", 600}};
+            _callbacks.Enqueue(new KeyValuePair<Action<string>, string>(action, data.ToString()));
         }
     }
 }

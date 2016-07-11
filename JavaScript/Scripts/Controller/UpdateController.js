@@ -3,10 +3,22 @@ var UpdateController = {
     definition: {
         Start: function(){
             print("UpdateController Start");
-			UIManager.get_Instance().ShowPanel("UpdatePanel");
-            ProtocalManager.get_Instance().Request("connector.entryHandler.version", "hello", function(str) {
-                print(str);
-				SceneManagerEx.get_Instance().ShowScene("Login");
+			UIManager.get_Instance().ShowPanel("UpdatePanel", this.LateStart);
+        },
+        LateStart: function()
+        {
+            ProtocalManager.get_Instance().Request("connector.entryHandler.version", "", function(str) {
+                var jsonData = JSON.parse(str);
+                if (jsonData["code"] == 200)
+                {
+                    SceneManagerEx.get_Instance().ShowScene("Login");
+                }
+                else
+                {
+                    var statusText = UnityEngine.GameObject.Find("StatusText").GetComponent$$String("UnityEngine.UI.Text");
+                    statusText.set_text("Server connect failed");
+                }
+
             });
         },
 		OnDestroy: function(){
