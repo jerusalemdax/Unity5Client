@@ -11,7 +11,7 @@ var LoginController = {
 		},
 		EnterGame: function(){
 			print("Enter Game")
-			SceneManagerEx.get_Instance().ShowScene("Map2D");
+			SceneManagerEx.get_Instance().ShowScene("2DCharacter");
 		}
     }
 };
